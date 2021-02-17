@@ -2914,6 +2914,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {}
 });
@@ -2976,6 +3013,11 @@ _inertiajs_progress__WEBPACK_IMPORTED_MODULE_3__.InertiaProgress.init(); // Buef
 
 
 vue__WEBPACK_IMPORTED_MODULE_1__.default.use(buefy__WEBPACK_IMPORTED_MODULE_5__.default);
+vue__WEBPACK_IMPORTED_MODULE_1__.default.mixin({
+  methods: {
+    route: route
+  }
+});
 
 /***/ }),
 
@@ -38633,21 +38675,66 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("main", [
-    _c(
-      "header",
-      [
-        _c("inertia-link", { attrs: { href: "/" } }, [_vm._v("Home")]),
-        _vm._v(" "),
-        _c("inertia-link", { attrs: { href: "/about" } }, [_vm._v("About")]),
-        _vm._v(" "),
-        _c("inertia-link", { attrs: { href: "/contact" } }, [_vm._v("Contact")])
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c("main", [_vm._t("default")], 2)
-  ])
+  return _c(
+    "main",
+    [
+      _c("b-navbar", {
+        scopedSlots: _vm._u([
+          {
+            key: "start",
+            fn: function() {
+              return [
+                _c(
+                  "b-navbar-item",
+                  [
+                    _c("inertia-link", { attrs: { href: "/" } }, [
+                      _vm._v("Home")
+                    ])
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c(
+                  "b-navbar-item",
+                  [
+                    _c("inertia-link", { attrs: { href: "/admin/users" } }, [
+                      _vm._v("Users")
+                    ])
+                  ],
+                  1
+                )
+              ]
+            },
+            proxy: true
+          },
+          {
+            key: "end",
+            fn: function() {
+              return [
+                _c("b-navbar-item", { attrs: { tag: "div" } }, [
+                  _c("div", { staticClass: "buttons" }, [
+                    _c("a", { staticClass: "button is-primary" }, [
+                      _c("strong", [_vm._v("Sign up")])
+                    ]),
+                    _vm._v(" "),
+                    _c("a", { staticClass: "button is-light" }, [
+                      _vm._v(
+                        "\n                            Log in\n                        "
+                      )
+                    ])
+                  ])
+                ])
+              ]
+            },
+            proxy: true
+          }
+        ])
+      }),
+      _vm._v(" "),
+      _c("section", { staticClass: "m-6" }, [_vm._t("default")], 2)
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -50771,6 +50858,22 @@ Vue.compile = compileToFunctions;
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
+	"./Admin/Users/Create": [
+		"./resources/js/Pages/Admin/Users/Create.vue",
+		"resources_js_Pages_Admin_Users_Create_vue"
+	],
+	"./Admin/Users/Create.vue": [
+		"./resources/js/Pages/Admin/Users/Create.vue",
+		"resources_js_Pages_Admin_Users_Create_vue"
+	],
+	"./Admin/Users/Index": [
+		"./resources/js/Pages/Admin/Users/Index.vue",
+		"resources_js_Pages_Admin_Users_Index_vue"
+	],
+	"./Admin/Users/Index.vue": [
+		"./resources/js/Pages/Admin/Users/Index.vue",
+		"resources_js_Pages_Admin_Users_Index_vue"
+	],
 	"./Layouts/App": [
 		"./resources/js/Pages/Layouts/App.vue"
 	],
@@ -50891,7 +50994,7 @@ module.exports = webpackAsyncContext;
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resources_js_Pages_Layouts_DocNavigation_vue":1,"resources_js_Pages_Welcome_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resources_js_Pages_Admin_Users_Create_vue":1,"resources_js_Pages_Admin_Users_Index_vue":1,"resources_js_Pages_Layouts_DocNavigation_vue":1,"resources_js_Pages_Welcome_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

@@ -1,20 +1,40 @@
 <?php
 
+use App\Http\Controllers\Admin\UserController;
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| GUEST
 |--------------------------------------------------------------------------
 |
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
+| These routes are public for everyone one the web.
 |
 */
 
 Route::get('/', function () {
-    return \Inertia\Inertia::render('Welcome', [
-        'foo' => 'bar'
-    ])->withViewData(['title' => 'test']);
+    return Inertia::render('Welcome');
+});
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN
+|--------------------------------------------------------------------------
+|
+| These routes are only for users that are admin
+|
+*/
+
+/*
+|--------------------------------------------------------------------------
+| SUPER ADMIN
+|--------------------------------------------------------------------------
+|
+| These routes are only for users that are super-admin (only one super-admin per application recommended)
+|
+*/
+
+Route::middleware([])->prefix('admin')->name('admin.')->group(function (){
+    Route::resource('users', UserController::class);
 });
