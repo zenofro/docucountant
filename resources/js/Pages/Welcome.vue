@@ -1,13 +1,9 @@
 <template>
+    <div>
+        <div>Dit is een test {{ foo }}</div>
 
-    <div>Dit is een test {{ foo }}</div>
-
-    <div class="buttons">
-        <button class="button is-primary">Primary</button>
-        <button class="button is-link">Link</button>
+        <b-button type="is-success">success</b-button>
     </div>
-
-
 </template>
 
 <script>

@@ -1,9 +1,11 @@
 <template>
-    <div>DocNav</div>
+    <div>
+        <div>DocNav</div>
 
-    <article>
-        <slot />
-    </article>
+        <article>
+            <slot />
+        </article>
+    </div>
 </template>
 
 <script>

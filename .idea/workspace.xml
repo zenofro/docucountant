@@ -5,11 +5,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/resources_js_Pages_Layouts_DocNavigation_vue.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/resources_js_Pages_Layouts_DocNavigation_vue.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/resources_js_Pages_Welcome_vue.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/resources_js_Pages_Welcome_vue.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/Pages/Welcome.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/Pages/Welcome.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/webpack.mix.js" beforeDir="false" afterPath="$PROJECT_DIR$/webpack.mix.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/app.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -207,7 +206,7 @@
       <option name="presentableId" value="Default" />
       <updated>1613588561127</updated>
       <workItem from="1613588563204" duration="673000" />
-      <workItem from="1613589311322" duration="5308000" />
+      <workItem from="1613589311322" duration="6486000" />
     </task>
     <servers />
   </component>
