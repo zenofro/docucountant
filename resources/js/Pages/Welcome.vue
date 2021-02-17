@@ -1,18 +1,11 @@
 <template>
     <div>
-        <div>Dit is een test {{ foo }}</div>
-
-        <b-button type="is-success">success</b-button>
+        <p class="has-text-centered is-size-1">Welcome to your Document Accountant.</p>
     </div>
 </template>
 
 <script>
-    import AppLayout from './Layouts/App'
-    import DocNavigationLayout from './Layouts/DocNavigation'
-
     export default {
-        layout: [AppLayout, DocNavigationLayout],
-
         props: {
             foo: String
         }
