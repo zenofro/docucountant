@@ -62,7 +62,15 @@ export default {
     updated: function() {
         this.menuItems.forEach((value, index) => {
             value.active = route().current(value.activeRoute);
-        })
+        });
+
+        if (this.$page.props.flash.success){
+            this.$buefy.toast.open({
+                message: this.$page.props.flash.success,
+                type: 'is-success',
+                duration: 3000,
+            })
+        }
     },
 
 }
