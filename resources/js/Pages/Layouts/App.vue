@@ -71,6 +71,14 @@ export default {
                 duration: 3000,
             })
         }
+
+        if (this.$page.props.flash.error){
+            this.$buefy.toast.open({
+                message: this.$page.props.flash.error,
+                type: 'is-danger',
+                duration: 3000,
+            })
+        }
     },
 
 }
