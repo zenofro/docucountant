@@ -1,7 +1,7 @@
 <template>
     <main>
         <!-- Top Navbar-->
-        <b-navbar>
+        <b-navbar type="is-light">
 <!--            <template #brand>
                 <b-navbar-item tag="router-link" :to="{ path: '/' }">
                     <img
@@ -11,22 +11,17 @@
                 </b-navbar-item>
             </template>-->
             <template #start>
-                <b-navbar-item>
-                    <inertia-link href="/">Home</inertia-link>
-                </b-navbar-item>
 
-                <b-navbar-item>
-                    <inertia-link href="/admin/users">Users</inertia-link>
-                </b-navbar-item>
+                <inertia-link
+                    v-for="(item, index) in menuItems"
+                    :key="item.route"
+                    :href="item.route"
+                    :active="item.active"
+                    as="b-navbar-item"
+                >
+                    {{ item.label }}
+                </inertia-link>
 
-<!--                <b-navbar-dropdown label="Info">
-                    <b-navbar-item href="#">
-                        About
-                    </b-navbar-item>
-                    <b-navbar-item href="#">
-                        Contact
-                    </b-navbar-item>
-                </b-navbar-dropdown>-->
             </template>
 
             <template #end>
@@ -53,6 +48,21 @@
 export default {
     props: {
 
+    },
+
+    data: function () {
+        return {
+            menuItems: [
+                {route: route('home'), activeRoute: 'home', active: false, label: 'Home'},
+                {route: route('admin.users.index'), activeRoute: 'admin.users.*', active: false, label: 'Users'},
+            ]
+        }
+    },
+
+    updated: function() {
+        this.menuItems.forEach((value, index) => {
+            value.active = route().current(value.activeRoute);
+        })
     },
 
 }

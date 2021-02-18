@@ -2951,8 +2951,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: {}
+  props: {},
+  mounted: function mounted() {
+    console.log(route().current('admin.users.index'));
+  },
+  methods: {
+    isActiveRoute: function isActiveRoute() {
+      console.log('test');
+      return route().current('admin.users.index');
+    }
+  }
 });
 
 /***/ }),
@@ -38679,29 +38690,38 @@ var render = function() {
     "main",
     [
       _c("b-navbar", {
+        attrs: { type: "is-light" },
         scopedSlots: _vm._u([
           {
             key: "start",
             fn: function() {
               return [
                 _c(
-                  "b-navbar-item",
-                  [
-                    _c("inertia-link", { attrs: { href: "/" } }, [
-                      _vm._v("Home")
-                    ])
-                  ],
-                  1
+                  "inertia-link",
+                  { attrs: { href: "/", as: "b-navbar-item" } },
+                  [_vm._v("Home")]
                 ),
                 _vm._v(" "),
                 _c(
-                  "b-navbar-item",
+                  "inertia-link",
+                  {
+                    attrs: {
+                      href: _vm.route("admin.users.index"),
+                      as: "b-navbar-item",
+                      active: _vm.isActiveRoute()
+                    }
+                  },
                   [
-                    _c("inertia-link", { attrs: { href: "/admin/users" } }, [
-                      _vm._v("Users")
-                    ])
-                  ],
-                  1
+                    _c(
+                      "div",
+                      {
+                        class: _vm.isActiveRoute()
+                          ? "has-text-danger"
+                          : "has-text-info"
+                      },
+                      [_vm._v("Users")]
+                    )
+                  ]
                 )
               ]
             },
