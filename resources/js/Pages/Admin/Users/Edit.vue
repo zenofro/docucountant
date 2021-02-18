@@ -17,7 +17,7 @@
 
             <!-- submit -->
             <div class="is-flex is-justify-content-flex-end pt-3">
-                <b-button :disabled="form.processing" native-type="submit" type="is-success">Edit</b-button>
+                <b-button :disabled="form.processing" native-type="submit" type="is-success" :loading="form.processing">Edit</b-button>
             </div>
         </form>
     </div>
