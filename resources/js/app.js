@@ -55,3 +55,9 @@ Vue.mixin({
     }
 });
 
+// Sweet alert 2
+import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2/src/sweetalert2.js' // for theme import
+import VueSweetalert2 from 'vue-sweetalert2';
+Vue.use(VueSweetalert2);
+

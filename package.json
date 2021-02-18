@@ -25,8 +25,12 @@
         "@inertiajs/inertia": "^0.8.4",
         "@inertiajs/inertia-vue": "^0.5.5",
         "@inertiajs/progress": "^0.2.4",
+        "@sweetalert2/theme-bulma": "^4.0.3",
+        "@sweetalert2/theme-dark": "^4.0.3",
         "buefy": "^0.9.4",
         "bulma": "^0.9.2",
-        "vue": "^2.6.12"
+        "sweetalert2": "^10.15.4",
+        "vue": "^2.6.12",
+        "vue-sweetalert2": "^4.2.0"
     }
 }
