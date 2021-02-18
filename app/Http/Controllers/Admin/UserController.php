@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 
 class UserController extends Controller
@@ -58,12 +59,31 @@ class UserController extends Controller
 
     public function edit($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        return Inertia::render('Admin/Users/Edit', [
+            'user' => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email
+            ]
+        ]);
     }
 
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($id)],
+        ]);
+
+        User::findOrFail($id)->update([
+            'name' => $request->name,
+            'email' => $request->email,
+        ]);
+
+        return redirect()->route('admin.users.index')
+            ->with('success', 'User edited successfully');
     }
 
     public function destroy($id)
