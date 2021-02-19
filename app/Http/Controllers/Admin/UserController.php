@@ -62,11 +62,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
 
         return Inertia::render('Admin/Users/Edit', [
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email
-            ]
+            'user' => $user->only(['id', 'name', 'email'])
         ]);
     }
 
@@ -91,7 +87,7 @@ class UserController extends Controller
         try {
             User::findOrFail($id)->delete();
 
-            return redirect()->back()
+            return redirect()->route('admin.users.index')
                 ->with('success', 'User deleted successfully');
         } catch (\Exception $e){
             return redirect()->back()
