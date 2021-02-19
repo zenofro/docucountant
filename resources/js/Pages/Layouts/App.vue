@@ -27,12 +27,12 @@
             <template #end>
                 <b-navbar-item tag="div">
                     <div class="buttons">
-                        <a class="button is-primary">
+                        <inertia-link :href="route('register')" class="button is-primary">
                             <strong>Sign up</strong>
-                        </a>
-                        <a class="button is-light">
-                            Log in
-                        </a>
+                        </inertia-link>
+                        <inertia-link :href="route('login')" class="button is-light">
+                            <strong>Log in</strong>
+                        </inertia-link>
                     </div>
                 </b-navbar-item>
             </template>
