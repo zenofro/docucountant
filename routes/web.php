@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\App\DashboardController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,18 +18,24 @@ Route::get('/', function () {
     return Inertia::render('Welcome');
 })->name('home');
 
-/*
-|--------------------------------------------------------------------------
-| ADMIN
-|--------------------------------------------------------------------------
-|
-| These routes are only for users that are admin
-|
-*/
 
 /*
 |--------------------------------------------------------------------------
-| SUPER ADMIN
+| USER
+|--------------------------------------------------------------------------
+|
+| These routes are only for normal users
+|
+*/
+
+Route::middleware([])->prefix('app')->name('app.')->group(function (){
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN
 |--------------------------------------------------------------------------
 |
 | These routes are only for users that are super-admin (only one super-admin per application recommended)
