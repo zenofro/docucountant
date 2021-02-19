@@ -1,7 +1,7 @@
 <template>
     <main>
         <!-- Top Navbar-->
-        <b-navbar type="is-light">
+        <b-navbar type="is-light" wrapper-class="container">
 <!--            <template #brand>
                 <b-navbar-item tag="router-link" :to="{ path: '/' }">
                     <img
