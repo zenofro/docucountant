@@ -1,5 +1,15 @@
 <template>
     <div class="container">
+
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb" aria-label="breadcrumbs">
+            <ul>
+                <li><inertia-link :href="route('admin.users.index')">Users</inertia-link></li>
+                <li class="is-active"><a href="#" aria-current="page">{{ user.name }}</a></li>
+            </ul>
+        </nav>
+
+        <!-- Form -->
         <div class="box">
             <form @submit.prevent="form.patch(route('admin.users.update', user.id))">
                 <div class="columns">
