@@ -61,3 +61,6 @@ import Swal from 'sweetalert2';
 import VueSweetalert2 from 'vue-sweetalert2';
 Vue.use(VueSweetalert2);
 
+// Slugify
+window.slugify = require('slugify');
+
