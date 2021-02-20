@@ -14,6 +14,7 @@
 
                 <inertia-link
                     v-for="(item, index) in menuItems"
+                    v-if="item.visible"
                     :key="item.route"
                     :href="item.route"
                     :active="item.active"
@@ -61,8 +62,8 @@ export default {
     data: function () {
         return {
             menuItems: [
-                {route: route('home'), activeRoute: 'home', active: false, label: 'Home'},
-                {route: route('admin.users.index'), activeRoute: 'admin.users.*', active: false, label: 'Users'},
+                {route: route('home'), label: 'Home', activeRoute: 'home', active: false, visible: 'always'},
+                {route: route('admin.users.index'), label: 'Users', activeRoute: 'admin.users.*', active: false, visible: this.auth},
             ],
 
             auth: this.$page.props.auth
@@ -76,6 +77,9 @@ export default {
         // check active route
         this.menuItems.forEach((value, index) => {
             value.active = route().current(value.activeRoute);
+            if (value.visible !== 'always'){
+                value.visible = this.auth;
+            }
         });
 
         // show toast on flash messages

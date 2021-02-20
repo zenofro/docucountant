@@ -28,7 +28,7 @@ Route::get('/', function () {
 |
 */
 
-Route::middleware([])->prefix('app')->name('app.')->group(function (){
+Route::middleware(['auth'])->prefix('app')->name('app.')->group(function (){
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
@@ -42,6 +42,6 @@ Route::middleware([])->prefix('app')->name('app.')->group(function (){
 |
 */
 
-Route::middleware([])->prefix('admin')->name('admin.')->group(function (){
+Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function (){
     Route::resource('users', UserController::class);
 });
