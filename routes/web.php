@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\App\DashboardController;
+use App\Http\Controllers\App\ProjectController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -31,6 +32,8 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->prefix('app')->name('app.')->group(function (){
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::resource('projects', ProjectController::class);
 });
 
 
