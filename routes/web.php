@@ -38,10 +38,10 @@ Route::middleware(['auth'])->prefix('app')->name('app.')->group(function (){
 | ADMIN
 |--------------------------------------------------------------------------
 |
-| These routes are only for users that are super-admin (only one super-admin per application recommended)
+| These routes are only for users that are admin (only one admin per application recommended)
 |
 */
 
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function (){
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function (){
     Route::resource('users', UserController::class);
 });
