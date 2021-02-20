@@ -15,7 +15,12 @@
                 <b-field :message="form.errors.name"
                          :type="form.errors.name ? 'is-danger' : null"
                          label="Name">
-                    <b-input v-model="form.name" type="text"></b-input>
+                    <b-input @keyup.native="slugify" v-model="form.name" type="text"></b-input>
+                </b-field>
+
+                <!-- slug -->
+                <b-field label="Slug">
+                    <b-input v-model="slug" type="text" disabled></b-input>
                 </b-field>
 
                 <!-- short description -->
@@ -53,7 +58,17 @@ export default {
                 short_description: null,
                 description: null,
             }),
+
+            slug: null
         }
     },
+
+    methods: {
+        slugify: function(){
+            this.slug = slugify(this.form.name, {
+                lower: true
+            });
+        }
+    }
 }
 </script>

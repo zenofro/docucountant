@@ -28,7 +28,7 @@
                     {{ props.row.short_description }}
                 </b-table-column>
 
-                <b-table-column v-slot="props" field="user.name" label="Short description">
+                <b-table-column v-slot="props" field="user.name" label="Created by">
                     {{ props.row.user.name }}
                 </b-table-column>
 
