@@ -1,27 +1,19 @@
 <template>
-    <div class="container">
-        <!-- Form -->
-        <div class="box">
-            <form @submit.prevent="form.post(route('register'))">
-                <div class="columns">
-                    <div class="column">
-                        <!-- name -->
-                        <b-field :message="form.errors.name"
-                                 :type="form.errors.name ? 'is-danger' : null"
-                                 label="Name">
-                            <b-input v-model="form.name" type="text"></b-input>
-                        </b-field>
-                    </div>
+    <div class="columns is-centered is-vcentered">
+        <div class="column box is-3">
+            <!-- Status -->
+            <b-notification :active="status !== null" type="is-success is-light" aria-close-label="Close notification">
+                {{ status }}
+            </b-notification>
 
-                    <div class="column">
-                        <!-- email -->
-                        <b-field :message="form.errors.email"
-                                 :type="form.errors.email ? 'is-danger' : null"
-                                 label="Email">
-                            <b-input v-model="form.email" type="email"></b-input>
-                        </b-field>
-                    </div>
-                </div>
+            <form @submit.prevent="form.post('/reset-password')">
+
+                <!-- email -->
+                <b-field :message="form.errors.email"
+                         :type="form.errors.email ? 'is-danger' : null"
+                         label="Email">
+                    <b-input v-model="form.email" type="email"></b-input>
+                </b-field>
 
                 <div class="columns">
                     <div class="column">
@@ -42,11 +34,11 @@
                 </div>
 
                 <!-- submit -->
-                <div class="is-flex is-justify-content-space-between pt-3">
+                <div class="is-flex is-justify-content-space-between">
                     <inertia-link :href="route('login')" class="is-flex is-align-self-center">Login</inertia-link>
 
                     <b-button :disabled="form.processing" :loading="form.processing" native-type="submit" type="is-success">
-                        Register
+                        Reset password
                     </b-button>
                 </div>
             </form>
@@ -55,15 +47,19 @@
 </template>
 
 <script>
-
 export default {
+    props: {
+        status: String,
+        token: String
+    },
+
     data() {
         return {
             form: this.$inertia.form({
-                name: null,
                 email: null,
                 password: null,
                 password_confirmation: null,
+                token: this.token
             }),
         }
     },

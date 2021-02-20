@@ -1,6 +1,11 @@
 <template>
     <div class="columns is-centered is-vcentered">
         <div class="column box is-3">
+            <!-- Status -->
+            <b-notification :active="status !== null" type="is-success is-light" aria-close-label="Close notification">
+                {{ status }}
+            </b-notification>
+
             <form @submit.prevent="form.post(route('login'))">
 
                 <!-- email -->
@@ -24,7 +29,9 @@
                 </b-field>
 
                 <!-- submit -->
-                <div class="is-flex is-justify-content-flex-end">
+                <div class="is-flex is-justify-content-space-between mt-5">
+                    <inertia-link href="/forgot-password" class="is-flex is-align-self-center">Forgot password?</inertia-link>
+
                     <b-button :disabled="form.processing" :loading="form.processing" native-type="submit" type="is-success">
                         Log in
                     </b-button>
@@ -36,6 +43,10 @@
 
 <script>
     export default {
+        props: {
+            status: String,
+        },
+
         data() {
             return {
                 form: this.$inertia.form({
