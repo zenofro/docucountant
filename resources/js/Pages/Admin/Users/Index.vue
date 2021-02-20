@@ -28,9 +28,13 @@
                     {{ props.row.email }}
                 </b-table-column>
 
-
                 <b-table-column v-slot="props" width="60">
                     <div class="is-flex is-justify-content-center">
+                        <inertia-link :href="route('admin.users.impersonate', props.row.id)" as="b-button"
+                                      class="has-text-danger " type="is-text">
+                            <i class="fas fa-sign-in-alt"></i>
+                        </inertia-link>
+
                         <inertia-link :href="route('admin.users.edit', props.row.id)" as="b-button"
                                       class="has-text-warning " type="is-text">
                             <i class="fas fa-edit"></i>

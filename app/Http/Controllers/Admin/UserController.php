@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -93,5 +94,12 @@ class UserController extends Controller
             return redirect()->back()
                 ->with('error', 'Something went wrong, please try again.');
         }
+    }
+
+    public function impersonate($id)
+    {
+        Auth::loginUsingId($id);
+
+        return redirect()->route('home');
     }
 }

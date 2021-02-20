@@ -46,5 +46,6 @@ Route::middleware(['auth'])->prefix('app')->name('app.')->group(function (){
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function (){
     Route::resource('roles', RoleController::class)->only(['index', 'edit', 'update']);
 
+    Route::get('users/{id}/impersonate', [UserController::class, 'impersonate'])->name('users.impersonate');
     Route::resource('users', UserController::class);
 });
