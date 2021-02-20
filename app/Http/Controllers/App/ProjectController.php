@@ -56,7 +56,14 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
-        //
+        return Inertia::render('App/Projects/Show', [
+            'project' => $project->only([
+                'name',
+                'slug',
+                'short_description',
+                'description'
+            ])
+        ]);
     }
 
     public function edit(Project $project)

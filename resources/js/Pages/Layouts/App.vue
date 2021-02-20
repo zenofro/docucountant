@@ -49,7 +49,7 @@
             </template>
         </b-navbar>
 
-        <section class="m-6">
+        <section class="m-5">
             <slot />
         </section>
     </main>
@@ -57,10 +57,6 @@
 
 <script>
 export default {
-    props: {
-
-    },
-
     data: function () {
         return {
             auth: this.$page.props.auth,
