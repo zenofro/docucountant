@@ -22,12 +22,12 @@ class RolesAndPermissionsSeeder extends Seeder
         // array with all available permissions
         $permissions = [
 
-
         ];
 
         // create all of the above permissions
         foreach ($permissions as $p){
-            Permission::create(['name' => $p]);
+            if (Permission::findByName($p) == null)
+                Permission::create(['name' => $p]);
         }
 
 
