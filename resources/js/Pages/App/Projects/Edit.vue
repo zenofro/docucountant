@@ -4,13 +4,13 @@
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
                 <li><inertia-link :href="route('app.projects.index')">Projects</inertia-link></li>
-                <li class="is-active"><a href="#" aria-current="page">Create new project</a></li>
+                <li class="is-active"><a href="#" aria-current="page">{{ project.name }}</a></li>
             </ul>
         </nav>
 
         <!-- Form -->
         <div class="box">
-            <form @submit.prevent="form.post(route('app.projects.store'))">
+            <form @submit.prevent="form.patch(route('app.projects.update', project.slug))">
                 <!-- name -->
                 <b-field :message="form.errors.name"
                          :type="form.errors.name ? 'is-danger' : null"
@@ -40,10 +40,9 @@
                 </b-field>
 
                 <!-- submit -->
-                <div class="is-flex is-justify-content-flex-end pt-3">
-                    <b-button :disabled="form.processing" :loading="form.processing" native-type="submit" type="is-success">
-                        Create
-                    </b-button>
+                <div class="is-flex is-justify-content-space-between pt-3 buttons">
+                    <b-button type="is-danger" @click="destroy()">Delete</b-button>
+                    <b-button :disabled="form.processing" native-type="submit" type="is-success" :loading="form.processing">Edit</b-button>
                 </div>
             </form>
         </div>
@@ -52,14 +51,20 @@
 
 <script>
 
+import {Inertia} from "@inertiajs/inertia";
+
 export default {
+    props: {
+        project: Object,
+    },
+
     data() {
         return {
             form: this.$inertia.form({
-                name: null,
-                slug: null,
-                short_description: null,
-                description: null,
+                name: this.project.name,
+                slug: this.project.slug,
+                short_description: this.project.short_description,
+                description: this.project.description,
             }),
         }
     },
@@ -68,6 +73,24 @@ export default {
         slugify: function(){
             this.form.slug = slugify(this.form.name, {
                 lower: true
+            });
+        },
+
+        destroy: function() {
+            this.$swal({
+                icon: 'warning',
+                iconColor: 'red',
+                title: 'Are you sure?',
+                html: '<small>Deleting this project will remove all pages in it aswell!</small>',
+
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                confirmButtonColor: 'red',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.$swal.showLoading();
+                    Inertia.delete(route('app.projects.destroy', this.project.slug));
+                }
             });
         }
     }

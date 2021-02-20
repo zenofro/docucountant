@@ -34,7 +34,7 @@
 
                 <b-table-column v-slot="props" width="60">
                     <div class="is-flex is-justify-content-center">
-                        <inertia-link :href="route('app.projects.edit', props.row.id)" as="b-button"
+                        <inertia-link :href="route('app.projects.edit', props.row.slug)" as="b-button"
                                       class="has-text-warning " type="is-text">
                             <i class="fas fa-edit"></i>
                         </inertia-link>

@@ -14,7 +14,6 @@ class ProjectController extends Controller
 {
     public function __construct()
     {
-
     }
 
     public function index()
@@ -22,7 +21,7 @@ class ProjectController extends Controller
         return Inertia::render('App/Projects/Index', [
             'projects' => Project::all()->map(function (Project $project) {
                 return [
-                    'id' => $project->id,
+                    'slug' => $project->slug,
                     'name' => $project->name,
                     'short_description' => $project->short_description,
                     'user' => $project->user->only('name')
@@ -40,6 +39,7 @@ class ProjectController extends Controller
     {
         $this->validate($request, [
             'name' => ['required', 'string', 'max:255', Rule::unique('projects')],
+            'slug' => ['required', 'string', 'max:255', Rule::unique('projects')],
             'short_description' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
         ]);
@@ -54,23 +54,52 @@ class ProjectController extends Controller
         return redirect()->route('app.projects.index')->with('success', 'Project was created successfully');
     }
 
-    public function show($id)
+    public function show(Project $project)
     {
         //
     }
 
-    public function edit($id)
+    public function edit(Project $project)
     {
-        //
+        return Inertia::render('App/Projects/Edit', [
+            'project' => $project->only([
+                'name',
+                'slug',
+                'short_description',
+                'description'
+            ])
+        ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Project $project)
     {
-        //
+        $this->validate($request, [
+            'name' => ['required', 'string', 'max:255', Rule::unique('projects')->ignoreModel($project)],
+            'slug' => ['required', 'string', 'max:255', Rule::unique('projects')->ignoreModel($project)],
+            'short_description' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+        ]);
+
+        $project->update([
+            'name' => $request->name,
+            'short_description' => $request->short_description,
+            'description' => $request->description,
+            'slug' => Str::slug($request->name)
+        ]);
+
+        return redirect()->route('app.projects.index')->with('success', 'Project was updated successfully');
     }
 
-    public function destroy($id)
+    public function destroy(Project $project)
     {
-        //
+        try {
+            $project->delete();
+
+            return redirect()->route('app.projects.index')
+                ->with('success', 'Project deleted successfully');
+        } catch (\Exception $e){
+            return redirect()->back()
+                ->with('error', 'Something went wrong, please try again.');
+        }
     }
 }
