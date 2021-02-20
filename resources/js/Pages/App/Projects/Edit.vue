@@ -4,7 +4,8 @@
         <nav class="breadcrumb" aria-label="breadcrumbs">
             <ul>
                 <li><inertia-link :href="route('app.projects.index')">Projects</inertia-link></li>
-                <li class="is-active"><a href="#" aria-current="page">{{ project.name }}</a></li>
+                <li><inertia-link :href="route('app.projects.show', project.slug)">{{ project.name }}</inertia-link></li>
+                <li class="is-active"><a href="#" aria-current="page">Edit</a></li>
             </ul>
         </nav>
 

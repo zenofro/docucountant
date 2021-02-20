@@ -6,6 +6,7 @@
             <ul>
                 <li><inertia-link :href="route('admin.users.index')">Users</inertia-link></li>
                 <li class="is-active"><a href="#" aria-current="page">{{ user.name }}</a></li>
+                <li class="is-active"><a href="#" aria-current="page">Edit</a></li>
             </ul>
         </nav>
 
