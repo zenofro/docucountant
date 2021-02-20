@@ -63,14 +63,15 @@ export default {
 
     data: function () {
         return {
+            auth: this.$page.props.auth,
+
             menuItems: [
                 // when route.current() doesnt work
                 // {route: route('home'), label: 'Home', activeRoute: 'home', active: false, visible: 'always'},
                 // {route: route('admin.users.index'), label: 'Users', activeRoute: 'admin.users.*', active: false, visible: true}, // when route.current() doesnt work
-                {route: route('home'), label: 'Home', activeRoute: 'home', visible: true},
+                {route: route('home'), label: 'Home', activeRoute: 'home', visible: 'always'},
+                {route: route('app.projects.index'), label: 'Projects', activeRoute: 'app.projects.*', visible: false},
             ],
-
-            auth: this.$page.props.auth
         }
     },
 
@@ -78,13 +79,13 @@ export default {
         // refresh authenticated user
         this.auth = this.$page.props.auth;
 
-        // check active route
-        // this.menuItems.forEach((value, index) => {
-        //     value.active = route().current(value.activeRoute);
-        //     if (value.visible !== 'always'){
-        //         value.visible = this.auth;
-        //     }
-        // });
+        // check visible routes
+        this.menuItems.forEach((value, index) => {
+            // value.active = route().current(value.activeRoute);
+            if (value.visible !== 'always'){
+                value.visible = this.auth;
+            }
+        });
 
         // show toast on flash messages
         if (this.$page.props.flash.success){
