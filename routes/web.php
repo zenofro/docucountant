@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\App\DashboardController;
 use Illuminate\Support\Facades\Route;
@@ -43,5 +44,7 @@ Route::middleware(['auth'])->prefix('app')->name('app.')->group(function (){
 */
 
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function (){
+    Route::resource('roles', RoleController::class)->only(['index', 'edit', 'update']);
+
     Route::resource('users', UserController::class);
 });

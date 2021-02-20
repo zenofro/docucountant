@@ -17,7 +17,7 @@
                     v-if="item.visible"
                     :key="item.route"
                     :href="item.route"
-                    :active="item.active"
+                    :active="route().current(item.activeRoute)"
                     as="b-navbar-item"
                 >
                     {{ item.label }}
@@ -37,13 +37,15 @@
                     </div>
                 </b-navbar-item>
 
-                <b-navbar-item tag="div" v-else>
-                    <div class="buttons">
-                        <inertia-link :href="route('logout')" method="post" class="button is-light">
-                            <strong>Log out</strong>
-                        </inertia-link>
-                    </div>
-                </b-navbar-item>
+                <b-navbar-dropdown :label="auth.user.name" v-else>
+                    <inertia-link :href="route('admin.users.index')" as="b-navbar-item" :active="route().current('admin.users.*')">
+                        Users
+                    </inertia-link>
+
+                    <inertia-link :href="route('logout')" method="post" as="b-navbar-item">
+                        <strong>Logout</strong>
+                    </inertia-link>
+                </b-navbar-dropdown>
             </template>
         </b-navbar>
 
@@ -62,8 +64,10 @@ export default {
     data: function () {
         return {
             menuItems: [
-                {route: route('home'), label: 'Home', activeRoute: 'home', active: false, visible: 'always'},
-                {route: route('admin.users.index'), label: 'Users', activeRoute: 'admin.users.*', active: false, visible: this.auth},
+                // when route.current() doesnt work
+                // {route: route('home'), label: 'Home', activeRoute: 'home', active: false, visible: 'always'},
+                // {route: route('admin.users.index'), label: 'Users', activeRoute: 'admin.users.*', active: false, visible: true}, // when route.current() doesnt work
+                {route: route('home'), label: 'Home', activeRoute: 'home', visible: true},
             ],
 
             auth: this.$page.props.auth
@@ -75,12 +79,12 @@ export default {
         this.auth = this.$page.props.auth;
 
         // check active route
-        this.menuItems.forEach((value, index) => {
-            value.active = route().current(value.activeRoute);
-            if (value.visible !== 'always'){
-                value.visible = this.auth;
-            }
-        });
+        // this.menuItems.forEach((value, index) => {
+        //     value.active = route().current(value.activeRoute);
+        //     if (value.visible !== 'always'){
+        //         value.visible = this.auth;
+        //     }
+        // });
 
         // show toast on flash messages
         if (this.$page.props.flash.success){
