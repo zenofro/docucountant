@@ -25,13 +25,21 @@
             </template>
 
             <template #end>
-                <b-navbar-item tag="div">
+                <b-navbar-item tag="div" v-if="!auth">
                     <div class="buttons">
                         <inertia-link :href="route('register')" class="button is-primary">
                             <strong>Sign up</strong>
                         </inertia-link>
                         <inertia-link :href="route('login')" class="button is-light">
                             <strong>Log in</strong>
+                        </inertia-link>
+                    </div>
+                </b-navbar-item>
+
+                <b-navbar-item tag="div" v-else>
+                    <div class="buttons">
+                        <inertia-link :href="route('logout')" method="post" class="button is-light">
+                            <strong>Log out</strong>
                         </inertia-link>
                     </div>
                 </b-navbar-item>
@@ -55,15 +63,22 @@ export default {
             menuItems: [
                 {route: route('home'), activeRoute: 'home', active: false, label: 'Home'},
                 {route: route('admin.users.index'), activeRoute: 'admin.users.*', active: false, label: 'Users'},
-            ]
+            ],
+
+            auth: this.$page.props.auth
         }
     },
 
     updated: function() {
+        // refresh authenticated user
+        this.auth = this.$page.props.auth;
+
+        // check active route
         this.menuItems.forEach((value, index) => {
             value.active = route().current(value.activeRoute);
         });
 
+        // show toast on flash messages
         if (this.$page.props.flash.success){
             this.$buefy.toast.open({
                 message: this.$page.props.flash.success,

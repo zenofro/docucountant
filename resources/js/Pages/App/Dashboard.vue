@@ -1,5 +1,5 @@
 <template>
-    <div>Dashboard</div>
+    <div>Welcome {{ this.$page.props.auth.user.name }}</div>
 </template>
 
 <script>
