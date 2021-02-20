@@ -12,9 +12,11 @@ class CreateProjectsTable extends Migration
             $table->bigIncrements('id');
             $table->foreignId('user_id')->constrained();
 
-            $table->string('name');
+            $table->string('name')->unique();
             $table->string('short_description');
             $table->text('description')->nullable();
+
+            $table->string('slug')->unique();
 
             $table->timestamps();
         });
