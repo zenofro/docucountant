@@ -1,9 +1,9 @@
 <template>
     <div class="container">
         <!-- Breadcrumb -->
-        <nav class="breadcrumb" aria-label="breadcrumbs">
+        <nav aria-label="breadcrumbs" class="breadcrumb">
             <ul>
-                <li class="is-active"><a href="#" aria-current="page">Projects</a></li>
+                <li class="is-active"><a aria-current="page" href="#">Projects</a></li>
             </ul>
         </nav>
 
@@ -37,6 +37,11 @@
                         <inertia-link :href="route('app.projects.edit', props.row.slug)" as="b-button"
                                       class="has-text-warning " type="is-text">
                             <i class="fas fa-edit"></i>
+                        </inertia-link>
+
+                        <inertia-link :href="route('app.projects.show', props.row.slug)" as="b-button"
+                                      type="is-text">
+                            <i class="fas fa-chevron-right"></i>
                         </inertia-link>
                     </div>
                 </b-table-column>
