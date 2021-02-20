@@ -5,6 +5,7 @@ namespace App\Http\Controllers\App;
 use App\Http\Controllers\Controller;
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ProjectController extends Controller
@@ -30,12 +31,24 @@ class ProjectController extends Controller
 
     public function create()
     {
-        //
+        return Inertia::render('App/Projects/Create');
     }
 
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'name' => ['required', 'string', 'max:255'],
+            'short_description' => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string'],
+        ]);
+
+        Auth::user()->projects()->create([
+            'name' => $request->name,
+            'short_description' => $request->short_description,
+            'description' => $request->description
+        ]);
+
+        return redirect()->route('app.projects.index')->with('success', 'Project was created successfully');
     }
 
     public function show($id)
