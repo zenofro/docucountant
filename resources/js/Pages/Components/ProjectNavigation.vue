@@ -1,7 +1,6 @@
 <template>
-    <div class="container">
-    <div class="columns is-desktop">
-        <b-menu class="column is-3">
+    <div>
+        <b-menu>
             <b-menu-list>
                 <b-menu-item icon="information-outline" label="Home"></b-menu-item>
             </b-menu-list>
@@ -15,18 +14,19 @@
                 <b-menu-item icon="information-outline" label="Creating a new project"></b-menu-item>
                 <b-menu-item icon="information-outline" label="Editing a project"></b-menu-item>
             </b-menu-list>
-
         </b-menu>
 
-        <div class="column">
-            <slot />
-        </div>
-    </div>
+        <inertia-link :href="route('app.projects.sections.index', project.slug)" as="b-button" class="mt-5"
+                      type="is-success" expanded>
+            Edit sections/pages
+        </inertia-link>
     </div>
 </template>
 
 <script>
-    export default {
-
+export default {
+    props: {
+        project: Object
     }
+}
 </script>
