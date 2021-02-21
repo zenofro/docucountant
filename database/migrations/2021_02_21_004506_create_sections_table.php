@@ -4,15 +4,17 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProjectSectionsTable extends Migration
+class CreateSectionsTable extends Migration
 {
     public function up()
     {
-        Schema::create('project_sections', function (Blueprint $table) {
+        Schema::create('sections', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->foreignId('project_id')->constrained();
 
             $table->string('title');
+            $table->integer('order');
+            $table->string('slug');
 
             $table->timestamps();
         });
