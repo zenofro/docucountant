@@ -10,7 +10,7 @@ class CreatePagesTable extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->foreignId('section_id')->constrained();
+            $table->foreignId('section_id')->constrained()->onDelete('cascade');
 
             $table->string('title');
             $table->longText('contents')->nullable();
