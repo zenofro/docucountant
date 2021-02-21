@@ -18,7 +18,7 @@
 
         <inertia-link :href="route('app.projects.sections.index', project.slug)" as="b-button" class="mt-5"
                       type="is-success" expanded>
-            Edit sections/pages
+            Edit sections / pages
         </inertia-link>
     </div>
 </template>

@@ -34,7 +34,7 @@
                     Create new section
                 </inertia-link>
 
-                <b-collapse
+                <!--<b-collapse
                     class="card"
                     animation="slide"
                     v-for="(section, index) of sections"
@@ -61,7 +61,43 @@
                             {{ page.title }}
                         </div>
                     </div>
-                </b-collapse>
+                </b-collapse>-->
+
+                <b-table
+                    :data="sections"
+                    ref="table"
+                    detailed
+                    hoverable
+                    custom-detail-row
+                    detail-key="title"
+                    :show-detail-icon="showDetailIcon">
+
+                    <b-table-column
+                        field="title"
+                        width="300"
+                        sortable
+                        v-slot="props"
+                    >
+                        <template v-if="showDetailIcon">
+                            {{ props.row.title }}
+                        </template>
+                        <template v-else>
+                            <a @click="toggle(props.row)">
+                                {{ props.row.title }}
+                            </a>
+                        </template>
+                    </b-table-column>
+
+
+                    <template slot="detail" slot-scope="props">
+                        <tr v-for="item in props.row.pages" :key="item.title">
+                            <td v-if="showDetailIcon"></td>
+                            <td v-show="columnsVisible['name'].display">
+                                &nbsp;&nbsp;&nbsp;&nbsp;{{ item.title }}
+                            </td>
+                        </tr>
+                    </template>
+                </b-table>
 
             </div>
         </div>
@@ -81,21 +117,17 @@
 
         data() {
             return {
-                isOpen: 0,
-                collapses: [
-                    {
-                        title: 'Title 1',
-                        text: 'Text 1'
-                    },
-                    {
-                        title: 'Title 2',
-                        text: 'Text 2'
-                    },
-                    {
-                        title: 'Title 3',
-                        text: 'Text 3'
-                    }
-                ]
+                isOpen: null,
+                columnsVisible: {
+                    name: { title: 'Title', display: true },
+                },
+                showDetailIcon: true
+            }
+        },
+
+        methods: {
+            toggle(row) {
+                this.$refs.table.toggleDetails(row)
             }
         }
     }
