@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\App\DashboardController;
 use App\Http\Controllers\App\ProjectController;
+use App\Http\Controllers\App\SectionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -34,6 +35,7 @@ Route::middleware(['auth'])->prefix('app')->name('app.')->group(function (){
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('projects', ProjectController::class);
+    Route::resource('projects.sections', SectionController::class)->shallow();
 });
 
 

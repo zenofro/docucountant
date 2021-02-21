@@ -10,7 +10,7 @@ class Section extends Model
 
     public function project()
     {
-        $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class);
     }
 
     public function pages()
