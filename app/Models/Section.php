@@ -8,11 +8,6 @@ class Section extends Model
 {
     protected $guarded = ['id'];
 
-    public function getRouteKeyName()
-    {
-        return 'slug';
-    }
-
     public function project()
     {
         return $this->belongsTo(Project::class);
