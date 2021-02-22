@@ -8,8 +8,8 @@
 
             <b-menu-list v-for="section in navigation" :key="section.id" :label="section.title">
                 <inertia-link v-for="page in section.pages" :key="page.id"
-                              :href="route('app.pages.show', page.id)"
-                              :active="route().current('app.pages.show', page.id)"
+                              :href="route('app.projects.pages.show', {project: project.slug, page: page.slug})"
+                              :active="route().current('app.projects.pages.show', {project: project.slug, page: page.slug})"
                               as="b-menu-item" :label="page.title"></inertia-link>
             </b-menu-list>
         </b-menu>

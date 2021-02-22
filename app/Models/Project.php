@@ -20,7 +20,7 @@ class Project extends Model
                 'id' => $section->id,
                 'title' => $section->title,
                 'pages' => $section->pages()->orderBy('order')->get()->map(function (Page $page) {
-                    return $page->only('id', 'title');
+                    return $page->only('id', 'title', 'slug');
                 })
             ];
         });

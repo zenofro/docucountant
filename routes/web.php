@@ -38,7 +38,7 @@ Route::middleware(['auth'])->prefix('app')->name('app.')->group(function (){
     Route::resource('projects', ProjectController::class);
     Route::resource('projects.sections', SectionController::class)->shallow();
 
-    Route::resource('projects.pages', PageController::class)->shallow();
+    Route::resource('projects.pages', PageController::class)->except(['index']);
 });
 
 

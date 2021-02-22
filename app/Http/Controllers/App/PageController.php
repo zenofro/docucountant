@@ -13,11 +13,6 @@ use Inertia\Inertia;
 
 class PageController extends Controller
 {
-    public function index()
-    {
-        //
-    }
-
     public function create(Project $project)
     {
         return Inertia::render('App/Pages/Create', [
@@ -39,6 +34,7 @@ class PageController extends Controller
     public function store(Request $request, Project $project)
     {
         $section = $project->sections()->findOrFail($request->section_id);
+
         $this->validate($request, [
             'title' => ['required', 'string', 'max:255'],
             'slug' => [
@@ -51,17 +47,21 @@ class PageController extends Controller
 
         $page = new Page([
             'title' => $request->title,
-            'slug' => Str::slug($request->title),
+            'slug' => Str::slug($section->slug . ' ' . $request->title),
             'order' => $section->pages()->count() + 1
         ]);
 
         $section->pages()->save($page);
 
-        return redirect()->route('app.pages.show', $page)->with('success', 'Page created successfully');
+        return redirect()->route('app.projects.pages.show', [$project, $page])->with('success', 'Page created successfully');
     }
 
-    public function show(Page $page)
+    public function show(Project $project, $slug)
     {
+        $page = $project->pages->where('slug', $slug)->first();
+
+        if (!$page) abort(404);
+
         return Inertia::render('App/Pages/Show', [
             'navigation' => $page->section->project->getNavigation(),
             'project' => $page->section->project->only([
@@ -80,17 +80,17 @@ class PageController extends Controller
         ]);
     }
 
-    public function edit(Page $page)
+    public function edit(Project $project, Page $page)
     {
         //
     }
 
-    public function update(Request $request, Page $page)
+    public function update(Request $request, Project $project, Page $page)
     {
         //
     }
 
-    public function destroy(Page $page)
+    public function destroy(Project $project, Page $page)
     {
         //
     }
