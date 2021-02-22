@@ -51,8 +51,12 @@
                         <!-- Section -->
                         <b-field :message="form.errors.section_id"
                                  :type="form.errors.section_id ? 'is-danger' : null"
-                                 label="Section">
-                            <b-select placeholder="Select a section" v-model="form.section_id">
+                                 label="Section"
+                        >
+                            <b-select placeholder="Select a section"
+                                      v-model="form.section_id"
+                                      @change.native="slugify"
+                                      required>
                                 <option
                                     v-for="section in sections"
                                     :value="section.id"
@@ -101,7 +105,12 @@ export default {
 
     methods: {
         slugify: function(){
-            this.form.slug = slugify(this.form.title, {
+            let sectionSlug = '';
+            if (this.form.section_id) {
+                sectionSlug = this.sections.find(x => x.id === this.form.section_id).slug;
+            }
+
+            this.form.slug = slugify(`${sectionSlug} ${this.form.title}`, {
                 lower: true
             });
         }
