@@ -34,35 +34,6 @@
                     Create new section
                 </inertia-link>
 
-                <!--<b-collapse
-                    class="card"
-                    animation="slide"
-                    v-for="(section, index) of sections"
-                    :key="index"
-                    :open="isOpen === index"
-                    @open="isOpen = index">
-
-                    <template #trigger="props">
-                        <div class="card-header" role="button">
-                            <p class="card-header-title">
-                                {{ section.title }}
-                            </p>
-
-                            <a class="card-header-icon">
-                                <b-icon
-                                    :icon="props.open ? 'fas fa-chevron-down' : 'fas fa-chevron-left'">
-                                </b-icon>
-                            </a>
-                        </div>
-                    </template>
-
-                    <div class="card-content">
-                        <div class="content" v-for="page in section.pages">
-                            {{ page.title }}
-                        </div>
-                    </div>
-                </b-collapse>-->
-
                 <b-table
                     :data="sections"
                     ref="table"
@@ -75,7 +46,6 @@
                     <b-table-column
                         field="title"
                         width="300"
-                        sortable
                         v-slot="props"
                     >
                         <template v-if="showDetailIcon">
@@ -86,6 +56,17 @@
                                 {{ props.row.title }}
                             </a>
                         </template>
+                    </b-table-column>
+
+                    <b-table-column
+                        field="action"
+                        v-slot="props"
+                        :numeric="true"
+                    >
+                        <inertia-link :href="route('app.projects.sections.pages.create', {project: project.slug, section: props.row.slug})"
+                                      as="b-button" type="is-success is-light">
+                            Add page
+                        </inertia-link>
                     </b-table-column>
 
 

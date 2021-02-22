@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\App\DashboardController;
+use App\Http\Controllers\App\PageController;
 use App\Http\Controllers\App\ProjectController;
 use App\Http\Controllers\App\SectionController;
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,8 @@ Route::middleware(['auth'])->prefix('app')->name('app.')->group(function (){
 
     Route::resource('projects', ProjectController::class);
     Route::resource('projects.sections', SectionController::class)->shallow();
+
+    Route::resource('projects.sections.pages', PageController::class)->shallow();
 });
 
 
