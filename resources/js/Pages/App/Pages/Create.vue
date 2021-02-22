@@ -22,13 +22,8 @@
                                 {{ project.name }}
                             </inertia-link>
                         </li>
-                        <li>
-                            <inertia-link :href="route('app.projects.sections.index', project.slug)">
-                                Sections
-                            </inertia-link>
-                        </li>
                         <li class="is-active">
-                            <a href="">{{ section.title }}</a>
+                            <a href="#">Pages</a>
                         </li>
                         <li class="is-active">
                             <a href="#">Create new page</a>
@@ -38,7 +33,7 @@
 
                 <!-- Form -->
                 <div class="box">
-                    <form @submit.prevent="form.post(route('app.projects.sections.pages.store', [project.slug, section.slug]))">
+                    <form @submit.prevent="form.post(route('app.projects.pages.store', project.slug))">
                         <!-- title -->
                         <b-field :message="form.errors.title"
                                  :type="form.errors.title ? 'is-danger' : null"
@@ -53,15 +48,19 @@
                             <b-input v-model="form.slug" type="text" disabled></b-input>
                         </b-field>
 
-                        <!-- order -->
-                        <div class="columns">
-                            <b-field :message="form.errors.order"
-                                     :type="form.errors.order ? 'is-danger' : null"
-                                     label="Order"
-                                     class="column is-6">
-                                <b-numberinput v-model="form.order"></b-numberinput>
-                            </b-field>
-                        </div>
+                        <!-- Section -->
+                        <b-field :message="form.errors.section_id"
+                                 :type="form.errors.section_id ? 'is-danger' : null"
+                                 label="Section">
+                            <b-select placeholder="Select a section" v-model="form.section_id">
+                                <option
+                                    v-for="section in sections"
+                                    :value="section.id"
+                                    :key="section.id">
+                                    {{ section.title }}
+                                </option>
+                            </b-select>
+                        </b-field>
 
                         <!-- submit -->
                         <div class="is-flex is-justify-content-flex-end pt-3">
@@ -79,23 +78,22 @@
 </template>
 
 <script>
-import ProjectNavigation from "../../../Components/ProjectNavigation";
+import ProjectNavigation from "../../Components/ProjectNavigation";
 
 export default {
     components: {ProjectNavigation},
 
     props: {
         project: Object,
-        section: Object,
-        order: Number
+        sections: Array,
     },
 
     data() {
         return {
             form: this.$inertia.form({
                 title: null,
-                order: this.order,
                 slug: null,
+                section_id: null
             }),
         }
     },

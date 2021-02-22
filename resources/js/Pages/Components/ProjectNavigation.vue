@@ -16,10 +16,22 @@
             </b-menu-list>
         </b-menu>
 
-        <inertia-link :href="route('app.projects.sections.index', project.slug)" as="b-button" class="mt-5"
-                      type="is-success" expanded>
-            Edit sections / pages
-        </inertia-link>
+        <div class="columns mt-5">
+            <div class="column">
+                <inertia-link :href="route('app.projects.sections.index', project.slug)" as="b-button" class=""
+                              type="is-primary" expanded>
+                    Edit sections
+                </inertia-link>
+            </div>
+
+            <div class="column">
+                <inertia-link :href="route('app.projects.pages.create', project.slug)" as="b-button" class=""
+                              type="is-success" expanded>
+                    Add page
+                </inertia-link>
+            </div>
+        </div>
+
     </div>
 </template>
 

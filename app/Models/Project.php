@@ -22,4 +22,9 @@ class Project extends Model
     {
         return $this->hasMany(Section::class);
     }
+
+    public function pages()
+    {
+        return $this->hasManyThrough(Page::class, Section::class);
+    }
 }
