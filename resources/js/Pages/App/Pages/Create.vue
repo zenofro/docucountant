@@ -4,7 +4,7 @@
 
             <!-- Project navigation -->
             <div class="column is-3">
-                <ProjectNavigation :project="project" />
+                <ProjectNavigation :navigation="navigation" :project="project" />
             </div>
 
             <!-- Project page -->
@@ -84,6 +84,7 @@ export default {
     components: {ProjectNavigation},
 
     props: {
+        navigation: Array,
         project: Object,
         sections: Array,
     },

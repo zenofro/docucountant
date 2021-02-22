@@ -17,13 +17,14 @@ class SectionController extends Controller
 {
     public function index(Project $project)
     {
-        return Inertia::render('App/Projects/Sections/Index', [
+        return Inertia::render('App/Sections/Index', [
+            'navigation' => $project->getNavigation(),
             'project' => $project->only([
                 'slug',
                 'name',
                 'short_description'
             ]),
-            'sections' => Section::orderBy('order')->get()->map(function (Section $section) {
+            'sections' => $project->sections()->orderBy('order')->get()->map(function (Section $section) {
                 return [
                     'title' => $section->title,
                     'order' => $section->order,
@@ -42,7 +43,8 @@ class SectionController extends Controller
 
     public function create(Project $project)
     {
-        return Inertia::render('App/Projects/Sections/Create', [
+        return Inertia::render('App/Sections/Create', [
+            'navigation' => $project->getNavigation(),
             'project' => $project->only([
                 'name',
                 'slug'

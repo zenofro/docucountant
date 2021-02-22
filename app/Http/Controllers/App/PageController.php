@@ -21,6 +21,7 @@ class PageController extends Controller
     public function create(Project $project)
     {
         return Inertia::render('App/Pages/Create', [
+            'navigation' => $project->getNavigation(),
             'project' => $project->only([
                 'name',
                 'slug'
@@ -62,6 +63,7 @@ class PageController extends Controller
     public function show(Page $page)
     {
         return Inertia::render('App/Pages/Show', [
+            'navigation' => $page->section->project->getNavigation(),
             'project' => $page->section->project->only([
                 'slug',
                 'name'

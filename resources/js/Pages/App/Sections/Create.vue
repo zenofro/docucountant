@@ -4,7 +4,7 @@
 
             <!-- Project navigation -->
             <div class="column is-3">
-                <ProjectNavigation :project="project" />
+                <ProjectNavigation :navigation="navigation" :project="project" />
             </div>
 
             <!-- Project page -->
@@ -76,12 +76,13 @@
 </template>
 
 <script>
-    import ProjectNavigation from "../../../Components/ProjectNavigation";
+    import ProjectNavigation from "../../Components/ProjectNavigation";
 
     export default {
         components: {ProjectNavigation},
 
         props: {
+            navigation: Array,
             project: Object,
             order: Number
         },

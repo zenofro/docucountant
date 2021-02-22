@@ -2,17 +2,15 @@
     <div>
         <b-menu>
             <b-menu-list>
-                <b-menu-item icon="information-outline" label="Home"></b-menu-item>
+                <inertia-link :href="route('app.projects.show', project.slug)"
+                              :active="route().current('app.projects.show', project.slug)" as="b-menu-item" label="Home"></inertia-link>
             </b-menu-list>
 
-            <b-menu-list label="Users">
-                <b-menu-item icon="information-outline" label="Creating a new user"></b-menu-item>
-                <b-menu-item icon="information-outline" label="Editing a user"></b-menu-item>
-            </b-menu-list>
-
-            <b-menu-list label="Projects">
-                <b-menu-item icon="information-outline" label="Creating a new project"></b-menu-item>
-                <b-menu-item icon="information-outline" label="Editing a project"></b-menu-item>
+            <b-menu-list v-for="section in navigation" :key="section.id" :label="section.title">
+                <inertia-link v-for="page in section.pages" :key="page.id"
+                              :href="route('app.pages.show', page.id)"
+                              :active="route().current('app.pages.show', page.id)"
+                              as="b-menu-item" :label="page.title"></inertia-link>
             </b-menu-list>
         </b-menu>
 
@@ -38,6 +36,7 @@
 <script>
 export default {
     props: {
+        navigation: Array,
         project: Object
     }
 }

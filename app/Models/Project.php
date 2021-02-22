@@ -13,6 +13,19 @@ class Project extends Model
         return 'slug';
     }
 
+    public function getNavigation()
+    {
+        return $this->sections()->orderBy('order')->get()->map(function (Section $section) {
+            return [
+                'id' => $section->id,
+                'title' => $section->title,
+                'pages' => $section->pages()->orderBy('order')->get()->map(function (Page $page) {
+                    return $page->only('id', 'title');
+                })
+            ];
+        });
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
