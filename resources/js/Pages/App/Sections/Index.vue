@@ -42,7 +42,7 @@
 
                     <b-table-column v-slot="props" :numeric="true" field="action">
                         <inertia-link
-                            :href="route('app.sections.edit',  props.row.slug)"
+                            :href="route('app.sections.edit',  props.row.id)"
                             as="b-button" class="has-text-warning" type="is-text">
                             <i class="fas fa-edit"></i>
                         </inertia-link>

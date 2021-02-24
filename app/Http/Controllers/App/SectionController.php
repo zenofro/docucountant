@@ -26,9 +26,9 @@ class SectionController extends Controller
             ]),
             'sections' => $project->sections()->orderBy('order')->get()->map(function (Section $section) {
                 return [
+                    'id' => $section->id,
                     'title' => $section->title,
                     'order' => $section->order,
-                    'slug' => $section->slug,
                     'pages' => $section->pages->map(function (Page $page) {
                         return $page->only([
                             'title',
@@ -74,7 +74,7 @@ class SectionController extends Controller
 
         $project->sections()->save($section);
 
-        if($s = $project->sections()->whereOrder($section->order)->first()){
+        if ($s = $project->sections()->whereOrder($section->order)->first()) {
             $s->update(['order' => $project->sections()->count()]);
         }
 
@@ -82,22 +82,49 @@ class SectionController extends Controller
             ->with('success', 'Section was created successfully for project: ' . $project->name);
     }
 
-    public function show($id)
+    public function show(Section $section)
     {
         //
     }
 
-    public function edit($id)
+    public function edit(Section $section)
     {
-        //
+        return Inertia::render('App/Sections/Edit', [
+            'navigation' => $section->project->getNavigation(),
+            'project' => $section->project->only([
+                'name',
+                'slug'
+            ]),
+            'section' => $section->only([
+                'id',
+                'title',
+                'slug',
+                'order'
+            ])
+        ]);
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Section $section)
     {
-        //
+        $this->validate($request, [
+            'title' => ['required', 'string', 'max:255'],
+            'slug' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('sections')->where('project_id', $section->project->id)
+            ]
+        ]);
+
+        $section->update([
+            'title' => $request->title,
+            'slug' =>Str::slug($request->title)
+        ]);
+
+        return redirect()->route('app.projects.sections.index', $section->project)->with('success', 'Section was updated successfully');
     }
 
-    public function destroy($id)
+    public function destroy(Section $section)
     {
         //
     }
