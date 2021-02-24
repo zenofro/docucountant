@@ -14,7 +14,6 @@
 
             <b-table
                 :data="users"
-                :hoverable="true"
                 :paginated="true"
                 :striped="true"
                 class="is-rounded is-bordered"

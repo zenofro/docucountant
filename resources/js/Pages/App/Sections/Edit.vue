@@ -55,16 +55,6 @@
                             <b-input v-model="form.slug" type="text" disabled></b-input>
                         </b-field>
 
-                        <!-- order -->
-                        <div class="columns">
-                            <b-field :message="form.errors.order"
-                                     :type="form.errors.order ? 'is-danger' : null"
-                                     label="Order"
-                                     class="column is-6">
-                                <b-numberinput v-model="form.order"></b-numberinput>
-                            </b-field>
-                        </div>
-
                         <!-- submit -->
                         <div class="is-flex is-justify-content-flex-end pt-3">
                             <b-button :disabled="form.processing" :loading="form.processing" native-type="submit"
@@ -96,7 +86,6 @@ export default {
         return {
             form: this.$inertia.form({
                 title: this.section.title,
-                order: this.section.order,
                 slug: this.section.slug,
             }),
         }
