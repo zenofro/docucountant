@@ -4,7 +4,7 @@
 
             <!-- Project navigation -->
             <div class="column is-3">
-                <ProjectNavigation :navigation="navigation" :project="project" />
+                <ProjectNavigation :navigation="navigationMutated" :project="project" />
             </div>
 
             <!-- Project page -->
@@ -34,7 +34,19 @@
                     Create new section
                 </inertia-link>
 
-                <b-table :data="sections" striped>
+                <b-notification aria-close-label="Close notification">
+                    Hold and drag a row to change the order of sections.
+                </b-notification>
+
+                <b-table
+                    :data="sections"
+                    draggable
+                    @dragstart="dragstart"
+                    @drop="drop"
+                    @dragover="dragover"
+                    @dragleave="dragleave"
+                    id="test"
+                    striped>
 
                     <b-table-column v-slot="props" label="Title" width="300">
                         {{ props.row.title }}
@@ -65,6 +77,70 @@ export default {
         project: Object,
         sections: Array
     },
+
+    data() {
+        return {
+            navigationMutated: this.navigation,
+            draggingRow: null,
+            draggingRowIndex: null
+        }
+    },
+
+    methods: {
+        // start dragging
+        dragstart (payload) {
+            this.draggingRow = payload.row
+            this.draggingRowIndex = payload.index
+            payload.event.dataTransfer.effectAllowed = 'copy'
+        },
+
+        // drag over other row
+        dragover(payload) {
+            payload.event.dataTransfer.dropEffect = 'copy'
+            payload.event.target.closest('tr').classList.add('is-selected')
+            payload.event.preventDefault()
+        },
+
+        // leave table while dragging
+        dragleave(payload) {
+            payload.event.target.closest('tr').classList.remove('is-selected')
+            payload.event.preventDefault()
+        },
+
+        // drop the dragged row
+        drop(payload) {
+            payload.event.target.closest('tr').classList.remove('is-selected')
+
+            // change order of sections
+            this.sections.splice(payload.index, 0,
+                ...this.sections.splice(this.draggingRowIndex, 1))
+
+            // change order value of each section
+            this.sections.forEach(function(section, index){
+                section.order = index + 1;
+            });
+
+            // send post request with new order
+            axios.post(this.route('app.projects.sections.order', this.project.slug), {
+                sections: this.sections
+            }).then((response) => {
+                this.$buefy.toast.open({
+                    message: 'Order of sections changed successfully',
+                    type: 'is-success',
+                    duration: 3000,
+                })
+
+                this.navigationMutated = response.data.navigation;
+            }).catch((error) => {
+                this.$buefy.toast.open({
+                    message: 'Failed to change order of sections, please try again',
+                    type: 'is-danger',
+                    duration: 3000,
+                })
+            });
+
+        }
+    }
 }
 </script>
 

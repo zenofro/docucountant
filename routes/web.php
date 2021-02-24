@@ -35,6 +35,8 @@ Route::middleware(['auth'])->prefix('app')->name('app.')->group(function (){
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::resource('projects', ProjectController::class);
+
+    Route::post('projects/{project}/sections/order', [SectionController::class, 'order'])->name('projects.sections.order');
     Route::resource('projects.sections', SectionController::class)->shallow();
 
     Route::resource('projects.pages', PageController::class)->except(['index']);

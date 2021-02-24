@@ -25,18 +25,11 @@ class SectionController extends Controller
                 'short_description'
             ]),
             'sections' => $project->sections()->orderBy('order')->get()->map(function (Section $section) {
-                return [
-                    'id' => $section->id,
-                    'title' => $section->title,
-                    'order' => $section->order,
-                    'pages' => $section->pages->map(function (Page $page) {
-                        return $page->only([
-                            'title',
-                            'slug',
-                            'order'
-                        ]);
-                    })
-                ];
+                return $section->only([
+                    'id',
+                    'title',
+                    'order'
+                ]);
             })
         ]);
     }
@@ -127,5 +120,18 @@ class SectionController extends Controller
     public function destroy(Section $section)
     {
         //
+    }
+
+    public function order(Request $request, Project $project)
+    {
+        $sections = collect($request->sections);
+
+        foreach ($project->sections as $section) {
+            $section->update(['order' => $sections->firstWhere('id', $section->id)['order']]);
+        }
+
+        return response()->json([
+            'navigation' => $project->getNavigation()
+        ]);
     }
 }
