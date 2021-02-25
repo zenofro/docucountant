@@ -58,7 +58,7 @@ class PageController extends Controller
 
     public function show(Project $project, $slug)
     {
-        $page = $project->pages->where('slug', $slug)->first();
+        $page = $project->pages->firstWhere('slug', $slug);
 
         if (!$page) abort(404);
 
@@ -74,20 +74,47 @@ class PageController extends Controller
             ]),
             'page' => $page->only([
                 'id',
+                'slug',
                 'title',
                 'contents'
             ])
         ]);
     }
 
-    public function edit(Project $project, Page $page)
+    public function edit(Project $project, $slug)
     {
-        //
+        $page = $project->pages->firstWhere('slug', $slug);
+
+        if (!$page) abort(404);
+
+        return Inertia::render('App/Pages/Edit', [
+            'navigation' => $page->section->project->getNavigation(),
+            'project' => $page->section->project->only([
+                'slug',
+                'name'
+            ]),
+            'section' => $page->section->only([
+                'slug',
+                'title'
+            ]),
+            'page' => $page->only([
+                'id',
+                'slug',
+                'title',
+                'contents'
+            ])
+        ]);
     }
 
-    public function update(Request $request, Project $project, Page $page)
+    public function update(Request $request, Project $project, $slug)
     {
-        //
+        $page = $project->pages->firstWhere('slug', $slug);
+
+        if (!$page) abort(404);
+
+        $page->update(['contents' => $request->contents]);
+
+        return redirect()->route('app.projects.pages.show', ['project' => $project, 'page' => $page]);
     }
 
     public function destroy(Project $project, Page $page)

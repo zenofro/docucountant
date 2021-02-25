@@ -21,11 +21,17 @@
 
                 <!-- Contents -->
                 <div class="box">
+                    <div class="has-text-right">
+                        <inertia-link :href="route('app.projects.pages.edit', {project: project.slug, page: page.slug})" class="has-text-warning">
+                            <i class="fas fa-edit"></i>
+                        </inertia-link>
+                    </div>
+
                     <h2 class="title is-2 has-text-centered">{{ page.title}}</h2>
 
-                    <div class="p-5">
-                        {{ page.contents }}
-                    </div>
+
+
+                    <div class="p-5 content" v-html="page.contents"></div>
                 </div>
             </div>
         </div>
@@ -42,6 +48,9 @@ export default {
         project: Object,
         section: Object,
         page: Object
+    },
+    mounted() {
+        Prism.highlightAll()
     },
 }
 </script>

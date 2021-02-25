@@ -12,10 +12,12 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/prism.css') }}">
 
     <!-- Scripts -->
     @routes
     <script src="{{ mix('js/app.js') }}" defer></script>
+    <script src="{{ asset('js/prism.js') }}"></script>
 </head>
 <body>
 @inertia
