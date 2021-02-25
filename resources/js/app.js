@@ -64,3 +64,8 @@ Vue.use(VueSweetalert2);
 // Slugify
 window.slugify = require('slugify');
 
+// Prismjs
+// Prism.plugins.customClass.prefix('prism--')
+// const Prism = require('prismjs');
+// import 'prismjs/themes/prism.css'
+
