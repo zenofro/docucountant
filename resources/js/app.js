@@ -2,7 +2,7 @@ require('./bootstrap');
 
 /*
 |----------------------------------------------------------------
-| Vue 2
+| Vue 2 + Inertia
 |----------------------------------------------------------------
 */
 
@@ -41,7 +41,12 @@ import { InertiaProgress } from '@inertiajs/progress'
 
 InertiaProgress.init()
 
-// Buefy
+/*
+|----------------------------------------------------------------
+| Buefy
+|----------------------------------------------------------------
+*/
+
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 
@@ -55,17 +60,37 @@ Vue.mixin({
     }
 });
 
-// Sweet alert 2
+/*
+|----------------------------------------------------------------
+| Sweet alert 2
+|----------------------------------------------------------------
+*/
+
 import Swal from 'sweetalert2';
 // import Swal from 'sweetalert2/src/sweetalert2.js' // for theme import
 import VueSweetalert2 from 'vue-sweetalert2';
 Vue.use(VueSweetalert2);
 
-// Slugify
+/*
+|----------------------------------------------------------------
+| Slugify
+|----------------------------------------------------------------
+*/
 window.slugify = require('slugify');
 
-// Prismjs
+/*
+|----------------------------------------------------------------
+| Prisn js
+|----------------------------------------------------------------
+*/
+
 // Prism.plugins.customClass.prefix('prism--')
 // const Prism = require('prismjs');
 // import 'prismjs/themes/prism.css'
 
+/*
+|----------------------------------------------------------------
+| Tinymce
+|----------------------------------------------------------------
+*/
+require('./tinymce');

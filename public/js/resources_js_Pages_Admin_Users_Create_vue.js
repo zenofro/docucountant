@@ -17,8 +17,73 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "Create"
+  data: function data() {
+    return {
+      form: this.$inertia.form({
+        name: null,
+        email: null,
+        password: null,
+        password_confirmation: null
+      })
+    };
+  }
 });
 
 /***/ }),
@@ -111,9 +176,199 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._v("\n    Create\n")])
+  return _c("div", { staticClass: "container" }, [
+    _c(
+      "nav",
+      { staticClass: "breadcrumb", attrs: { "aria-label": "breadcrumbs" } },
+      [
+        _c("ul", [
+          _c(
+            "li",
+            [
+              _c(
+                "inertia-link",
+                { attrs: { href: _vm.route("admin.users.index") } },
+                [_vm._v("Users")]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _vm._m(0)
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "box" }, [
+      _c(
+        "form",
+        {
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              _vm.form.post(_vm.route("admin.users.store"))
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "columns" }, [
+            _c(
+              "div",
+              { staticClass: "column" },
+              [
+                _c(
+                  "b-field",
+                  {
+                    attrs: {
+                      message: _vm.form.errors.name,
+                      type: _vm.form.errors.name ? "is-danger" : null,
+                      label: "Name"
+                    }
+                  },
+                  [
+                    _c("b-input", {
+                      attrs: { type: "text" },
+                      model: {
+                        value: _vm.form.name,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "name", $$v)
+                        },
+                        expression: "form.name"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "column" },
+              [
+                _c(
+                  "b-field",
+                  {
+                    attrs: {
+                      message: _vm.form.errors.email,
+                      type: _vm.form.errors.email ? "is-danger" : null,
+                      label: "Email"
+                    }
+                  },
+                  [
+                    _c("b-input", {
+                      attrs: { type: "email" },
+                      model: {
+                        value: _vm.form.email,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "email", $$v)
+                        },
+                        expression: "form.email"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "columns" }, [
+            _c(
+              "div",
+              { staticClass: "column" },
+              [
+                _c(
+                  "b-field",
+                  {
+                    attrs: {
+                      message: _vm.form.errors.password,
+                      type: _vm.form.errors.password ? "is-danger" : null,
+                      label: "Password"
+                    }
+                  },
+                  [
+                    _c("b-input", {
+                      attrs: { "password-reveal": "", type: "password" },
+                      model: {
+                        value: _vm.form.password,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "password", $$v)
+                        },
+                        expression: "form.password"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "column" },
+              [
+                _c(
+                  "b-field",
+                  { attrs: { label: "Confirm password" } },
+                  [
+                    _c("b-input", {
+                      attrs: { "password-reveal": "", type: "password" },
+                      model: {
+                        value: _vm.form.password_confirmation,
+                        callback: function($$v) {
+                          _vm.$set(_vm.form, "password_confirmation", $$v)
+                        },
+                        expression: "form.password_confirmation"
+                      }
+                    })
+                  ],
+                  1
+                )
+              ],
+              1
+            )
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "is-flex is-justify-content-flex-end pt-3" },
+            [
+              _c(
+                "b-button",
+                {
+                  attrs: {
+                    disabled: _vm.form.processing,
+                    loading: _vm.form.processing,
+                    "native-type": "submit",
+                    type: "is-success"
+                  }
+                },
+                [_vm._v("\n                    Create\n                ")]
+              )
+            ],
+            1
+          )
+        ]
+      )
+    ])
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "is-active" }, [
+      _c("a", { attrs: { href: "#", "aria-current": "page" } }, [
+        _vm._v("Create new user")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 

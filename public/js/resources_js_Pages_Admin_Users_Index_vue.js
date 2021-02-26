@@ -11,6 +11,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _inertiajs_inertia__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @inertiajs/inertia */ "./node_modules/@inertiajs/inertia/dist/index.js");
 //
 //
 //
@@ -40,12 +41,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     users: Array
-  },
-  mounted: function mounted() {
-    console.log(route('admin.users.create'));
   }
 });
 
@@ -139,87 +156,152 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "box" },
-    [
-      _c(
-        "inertia-link",
-        {
-          staticClass: "mb-4",
-          attrs: {
-            href: _vm.route("admin.users.create"),
-            as: "b-button",
-            type: "is-success is-light"
-          }
-        },
-        [_vm._v("\n        Create new user\n    ")]
-      ),
-      _vm._v(" "),
-      _c(
-        "b-table",
-        {
-          staticClass: "is-rounded is-bordered",
-          attrs: {
-            data: _vm.users,
-            paginated: true,
-            "per-page": "10",
-            striped: true,
-            hoverable: true
-          }
-        },
-        [
-          _c("b-table-column", {
-            attrs: { field: "name", label: "Name" },
-            scopedSlots: _vm._u([
-              {
-                key: "default",
-                fn: function(props) {
-                  return [
-                    _vm._v(
-                      "\n            " + _vm._s(props.row.name) + "\n        "
-                    )
-                  ]
+  return _c("div", { staticClass: "container" }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "div",
+      { staticClass: "box" },
+      [
+        _c(
+          "inertia-link",
+          {
+            staticClass: "mb-4",
+            attrs: {
+              href: _vm.route("admin.users.create"),
+              as: "b-button",
+              type: "is-success is-light"
+            }
+          },
+          [_vm._v("\n            Create new user\n        ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "b-table",
+          {
+            staticClass: "is-rounded is-bordered",
+            attrs: {
+              data: _vm.users,
+              paginated: true,
+              striped: true,
+              "per-page": "10"
+            }
+          },
+          [
+            _c("b-table-column", {
+              attrs: { field: "name", label: "Name" },
+              scopedSlots: _vm._u([
+                {
+                  key: "default",
+                  fn: function(props) {
+                    return [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(props.row.name) +
+                          "\n            "
+                      )
+                    ]
+                  }
                 }
-              }
-            ])
-          }),
-          _vm._v(" "),
-          _c("b-table-column", {
-            attrs: { field: "email", label: "Email" },
-            scopedSlots: _vm._u([
-              {
-                key: "default",
-                fn: function(props) {
-                  return [
-                    _vm._v(
-                      "\n            " + _vm._s(props.row.email) + "\n        "
-                    )
-                  ]
+              ])
+            }),
+            _vm._v(" "),
+            _c("b-table-column", {
+              attrs: { field: "email", label: "Email" },
+              scopedSlots: _vm._u([
+                {
+                  key: "default",
+                  fn: function(props) {
+                    return [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(props.row.email) +
+                          "\n            "
+                      )
+                    ]
+                  }
                 }
-              }
-            ])
-          }),
-          _vm._v(" "),
-          _c("b-table-column", {
-            attrs: { width: "60" },
-            scopedSlots: _vm._u([
-              {
-                key: "default",
-                fn: function(props) {
-                  return [_c("b-button", [_vm._v("Test")])]
+              ])
+            }),
+            _vm._v(" "),
+            _c("b-table-column", {
+              attrs: { width: "60" },
+              scopedSlots: _vm._u([
+                {
+                  key: "default",
+                  fn: function(props) {
+                    return [
+                      _c(
+                        "div",
+                        { staticClass: "is-flex is-justify-content-center" },
+                        [
+                          _c(
+                            "inertia-link",
+                            {
+                              staticClass: "has-text-danger ",
+                              attrs: {
+                                href: _vm.route(
+                                  "admin.users.impersonate",
+                                  props.row.id
+                                ),
+                                as: "b-button",
+                                type: "is-text"
+                              }
+                            },
+                            [_c("i", { staticClass: "fas fa-sign-in-alt" })]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "inertia-link",
+                            {
+                              staticClass: "has-text-warning ",
+                              attrs: {
+                                href: _vm.route(
+                                  "admin.users.edit",
+                                  props.row.id
+                                ),
+                                as: "b-button",
+                                type: "is-text"
+                              }
+                            },
+                            [_c("i", { staticClass: "fas fa-edit" })]
+                          )
+                        ],
+                        1
+                      )
+                    ]
+                  }
                 }
-              }
-            ])
-          })
-        ],
-        1
-      )
-    ],
-    1
-  )
+              ])
+            })
+          ],
+          1
+        )
+      ],
+      1
+    )
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "nav",
+      { staticClass: "breadcrumb", attrs: { "aria-label": "breadcrumbs" } },
+      [
+        _c("ul", [
+          _c("li", { staticClass: "is-active" }, [
+            _c("a", { attrs: { href: "#", "aria-current": "page" } }, [
+              _vm._v("Users")
+            ])
+          ])
+        ])
+      ]
+    )
+  }
+]
 render._withStripped = true
 
 
