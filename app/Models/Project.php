@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use FFMpeg\FFMpeg;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-class Project extends Model
+class Project extends Model implements HasMedia
 {
     use InteractsWithMedia;
 
@@ -27,6 +30,15 @@ class Project extends Model
                 })
             ];
         });
+    }
+
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this->addMediaConversion('thumb')
+            ->width(500)
+            ->height(500)
+            ->extractVideoFrameAtSecond(1)
+            ->performOnCollections('videos');
     }
 
     public function user()
