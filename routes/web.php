@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\App\DashboardController;
+use App\Http\Controllers\App\MediaController;
 use App\Http\Controllers\App\PageController;
 use App\Http\Controllers\App\ProjectController;
 use App\Http\Controllers\App\SectionController;
@@ -40,6 +41,8 @@ Route::middleware(['auth'])->prefix('app')->name('app.')->group(function (){
     Route::resource('projects.sections', SectionController::class)->shallow();
 
     Route::resource('projects.pages', PageController::class)->except(['index']);
+
+    Route::resource('projects.media', MediaController::class);
 });
 
 

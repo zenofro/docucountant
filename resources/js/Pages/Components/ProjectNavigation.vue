@@ -1,5 +1,6 @@
 <template>
     <div>
+        <!-- Navigation -->
         <b-menu>
             <b-menu-list>
                 <inertia-link :active="route().current('app.projects.show', project.slug)"
@@ -31,6 +32,89 @@
             </div>
         </div>
 
+        <!-- Media -->
+        <section>
+            <b-button
+                label="Media"
+                type="is-info is-light"
+                expanded
+                @click="openMediaModal" />
+
+            <b-modal v-model="isMediaModalActive">
+                <div class="card">
+                    <div class="card-content">
+
+                        <b-loading :is-full-page="false" v-model="isLoading"></b-loading>
+
+                        <!-- Available media -->
+                        <b-tabs v-model="activeTab">
+                            <b-tab-item label="Images">
+                                <div class="columns">
+                                    <a href="#" class="mr-3" v-for="media in mediaImages" @click="getUrl(media)">
+                                        <div class="column mb-5" style="height: auto" >
+                                            <figure class="image is-128x128">
+                                                <img :src="media.url" :alt="media.file_name" />
+                                            </figure>
+                                        </div>
+                                    </a>
+                                </div>
+                            </b-tab-item>
+
+                            <b-tab-item label="Videos">
+                                <div class="columns">
+                                    <a href="#" class="mr-3" v-for="media in mediaVideos" @click="getUrl(media)">
+                                        <div class="column mb-5" style="height: auto" >
+                                            <figure class="image is-128x128">
+                                                <img :src="media.thumbnail" :alt="media.file_name" />
+                                            </figure>
+                                        </div>
+                                    </a>
+                                </div>
+                            </b-tab-item>
+
+                        </b-tabs>
+
+
+                        <!-- Upload media -->
+                        <form @submit.prevent="uploadMedia">
+                            <div class="is-flex">
+                                <b-field
+                                    :message="form.errors.media"
+                                    :type="form.errors.media ? 'is-danger' : null"
+                                    class="file is-primary"
+                                    :class="{'has-name': !!form.media}"
+                                >
+                                    <b-upload
+                                        v-model="form.media"
+                                        class="file-label"
+                                        required
+                                        accept="video/*,image/*"
+                                    >
+                                        <span class="file-cta">
+                                            <b-icon class="file-icon" icon="upload"></b-icon>
+                                            <span class="file-label">Click to upload</span>
+                                        </span>
+
+                                        <span class="file-name" v-if="form.media">
+                                            {{ form.media.name }}
+                                        </span>
+                                    </b-upload>
+                                </b-field>
+
+                                <div class="ml-3" v-if="form.media">
+                                    <b-button :disabled="form.processing" :loading="form.processing" native-type="submit"
+                                              type="is-success">
+                                        Upload
+                                    </b-button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </b-modal>
+        </section>
+
     </div>
 </template>
 
@@ -39,6 +123,64 @@ export default {
     props: {
         navigation: Array,
         project: Object
+    },
+
+    data() {
+        return {
+            isMediaModalActive: false,
+            activeTab: 0,
+            isLoading: false,
+            mediaImages: null,
+            mediaVideos: null,
+            form: this.$inertia.form({
+                media: null,
+            }),
+        };
+    },
+
+    methods: {
+        openMediaModal: function (){
+            this.isMediaModalActive = true;
+            this.isLoading = true;
+            this.refreshMedia();
+        },
+
+        refreshMedia: function (){
+            axios.get(this.route('app.projects.media.index', this.project.slug))
+                .then((response) => {
+                    this.mediaImages = response.data.media_images;
+                    this.mediaVideos = response.data.media_videos;
+                    this.isLoading = false;
+                });
+        },
+
+        uploadMedia: function () {
+            this.form.post(this.route('app.projects.media.store', this.project.slug), {
+                onSuccess: page => {
+                    if(this.form.wasSuccessful){
+                        this.form.reset();
+                        this.refreshMedia();
+                    }
+                },
+            })
+        },
+
+        getUrl: function (media){
+            this.$copyText(media.url)
+                .then((e) => {
+                    this.$buefy.toast.open({
+                        message: 'Copied url!',
+                        type: 'is-success',
+                        duration: 1500,
+                    })
+                }, (e) => {
+                    this.$buefy.toast.open({
+                        message: 'Failed to copy url!',
+                        type: 'is-danger',
+                        duration: 1500,
+                    })
+            });
+        }
     }
 }
 </script>
