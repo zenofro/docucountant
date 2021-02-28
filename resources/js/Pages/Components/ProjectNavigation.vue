@@ -40,7 +40,7 @@
                 expanded
                 @click="openMediaModal" />
 
-            <b-modal v-model="isMediaModalActive">
+            <b-modal v-model="isMediaModalActive" class="p-5" :width="1500">
                 <div class="card">
                     <div class="card-content">
 
@@ -49,22 +49,24 @@
                         <!-- Available media -->
                         <b-tabs v-model="activeTab">
                             <b-tab-item label="Images">
-                                <div class="columns">
-                                    <a href="#" class="mr-3" v-for="media in mediaImages" @click="getUrl(media)">
-                                        <div class="column mb-5" style="height: auto" >
-                                            <figure class="image is-128x128">
-                                                <img :src="media.url" :alt="media.file_name" />
-                                            </figure>
+                                <div class="columns is-multiline">
+                                    <div class="column is-2 mb-5" v-for="media in mediaImages">
+                                        <div class="notification is-light">
+                                        <button class="delete is-flex is-justify-content-end" @click="deleteMedia(media)"></button>
+
+                                        <a href="#"  @click="getUrl(media)">
+                                            <img :src="media.url" :alt="media.file_name" style="height: 100px; width: 200px; object-fit: contain" />
+                                        </a>
                                         </div>
-                                    </a>
+                                    </div>
                                 </div>
                             </b-tab-item>
 
                             <b-tab-item label="Videos">
                                 <div class="columns">
-                                    <a href="#" class="mr-3" v-for="media in mediaVideos" @click="getUrl(media)">
+                                    <a href="#" class="mr-3 has-background-light" v-for="media in mediaVideos" @click="getUrl(media)">
                                         <div class="column mb-5" style="height: auto" >
-                                            <figure class="image is-128x128">
+                                            <figure class="image" style="height: 100px; width: 200px">
                                                 <img :src="media.thumbnail" :alt="media.file_name" />
                                             </figure>
                                         </div>
@@ -179,6 +181,24 @@ export default {
                         type: 'is-danger',
                         duration: 1500,
                     })
+            });
+        },
+
+        deleteMedia: function (media){
+            axios.delete(this.route('app.projects.media.destroy', this.project.slug), {
+                data: {
+                    media_id: media.id
+                }
+            }).then((response) => {
+                console.log(response);
+                this.$buefy.toast.open({
+                    message: 'Removed media from project!',
+                    type: 'is-success',
+                    duration: 1500,
+                });
+
+                this.isLoading = false;
+                this.refreshMedia();
             });
         }
     }

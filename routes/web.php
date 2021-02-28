@@ -42,7 +42,9 @@ Route::middleware(['auth'])->prefix('app')->name('app.')->group(function (){
 
     Route::resource('projects.pages', PageController::class)->except(['index']);
 
-    Route::resource('projects.media', MediaController::class);
+    // project media
+    Route::delete('projects/{project}/media', [MediaController::class, 'destroy'])->name('projects.media.destroy');
+    Route::resource('projects.media', MediaController::class)->only(['index', 'store']);
 });
 
 

@@ -15,6 +15,7 @@ class MediaController extends Controller
         return response()->json([
             'media_images' => $project->getMedia('images')->map(function (Media $media) {
                 return [
+                    'id' => $media->id,
                     'file_name' => $media->file_name,
                     'mime' => $media->mime_type,
                     'url' => $media->getFullUrl()
@@ -23,6 +24,7 @@ class MediaController extends Controller
 
             'media_videos' => $project->getMedia('videos')->map(function (Media $media) {
                 return [
+                    'id' => $media->id,
                     'file_name' => $media->file_name,
                     'mime' => $media->mime_type,
                     'url' => $media->getFullUrl(),
@@ -48,5 +50,10 @@ class MediaController extends Controller
 
 
         return redirect()->back()->with('success', 'Successfully added media to project: ' . $project->name);
+    }
+
+    public function destroy(Request $request, Project $project)
+    {
+        $project->deleteMedia($request->media_id);
     }
 }
