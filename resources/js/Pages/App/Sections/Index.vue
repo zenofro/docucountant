@@ -45,7 +45,6 @@
                     @drop="drop"
                     @dragover="dragover"
                     @dragleave="dragleave"
-                    id="test"
                     striped>
 
                     <b-table-column v-slot="props" label="Title" width="300">

@@ -4,7 +4,7 @@
 
             <!-- Project navigation -->
             <div class="column is-3">
-                <ProjectNavigation :navigation="navigation" :project="project" />
+                <ProjectNavigation :navigation="navigationMutated" :project="project" />
             </div>
 
             <!-- Project page -->
@@ -38,9 +38,9 @@
                     </ul>
                 </nav>
 
-                <!-- Form -->
                 <div class="box">
-                    <form @submit.prevent="form.patch(route('app.sections.update', section.id))">
+                    <!-- Form -->
+                    <form class="mb-5" @submit.prevent="form.patch(route('app.sections.update', section.id))">
                         <!-- title -->
                         <b-field :message="form.errors.title"
                                  :type="form.errors.title ? 'is-danger' : null"
@@ -63,8 +63,36 @@
                             </b-button>
                         </div>
                     </form>
-                </div>
 
+                    <hr>
+
+                    <h3 class="subtitle is-5">Pages inside "{{ section.title }}"</h3>
+
+                    <!-- Edit pages in section -->
+                    <b-notification aria-close-label="Close notification">
+                        Hold and drag a row to change the order of pages.
+                    </b-notification>
+
+                    <b-table
+                        :data="pages"
+                        draggable
+                        @dragstart="dragstart"
+                        @drop="drop"
+                        @dragover="dragover"
+                        @dragleave="dragleave"
+                        striped>
+
+                        <b-table-column v-slot="props" label="Title" width="300">
+                            {{ props.row.title }}
+                        </b-table-column>
+
+                        <b-table-column v-slot="props" :numeric="true" field="action">
+                            <b-button type="is-text" class="has-text-danger" @click="deletePage(props.row.slug)">
+                                <i class="fas fa-trash-alt"></i>
+                            </b-button>
+                        </b-table-column>
+                    </b-table>
+                </div>
             </div>
         </div>
     </div>
@@ -72,6 +100,7 @@
 
 <script>
 import ProjectNavigation from "../../Components/ProjectNavigation";
+import {Inertia} from "@inertiajs/inertia";
 
 export default {
     components: {ProjectNavigation},
@@ -79,7 +108,8 @@ export default {
     props: {
         navigation: Array,
         project: Object,
-        section: Object
+        section: Object,
+        pages: Array
     },
 
     data() {
@@ -88,6 +118,9 @@ export default {
                 title: this.section.title,
                 slug: this.section.slug,
             }),
+            navigationMutated: this.navigation,
+            draggingRow: null,
+            draggingRowIndex: null
         }
     },
 
@@ -95,6 +128,78 @@ export default {
         slugify: function(){
             this.form.slug = slugify(this.form.title, {
                 lower: true
+            });
+        },
+
+        deletePage: function (slug){
+            this.$swal({
+                icon: 'warning',
+                iconColor: 'red',
+                title: 'Are you sure?',
+                html: '<small>Deleting this page will delete all of its contents within!</small>',
+
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                confirmButtonColor: 'red',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.$swal.showLoading();
+
+                    this.$inertia.delete(this.route('app.projects.pages.destroy', {project: this.project.slug, page: slug}));
+                }
+            });
+        },
+
+        // start dragging
+        dragstart (payload) {
+            this.draggingRow = payload.row
+            this.draggingRowIndex = payload.index
+            payload.event.dataTransfer.effectAllowed = 'copy'
+        },
+
+        // drag over other row
+        dragover(payload) {
+            payload.event.dataTransfer.dropEffect = 'copy'
+            payload.event.target.closest('tr').classList.add('is-selected')
+            payload.event.preventDefault()
+        },
+
+        // leave table while dragging
+        dragleave(payload) {
+            payload.event.target.closest('tr').classList.remove('is-selected')
+            payload.event.preventDefault()
+        },
+
+        // drop the dragged row
+        drop(payload) {
+            payload.event.target.closest('tr').classList.remove('is-selected')
+
+            // change order of sections
+            this.pages.splice(payload.index, 0,
+                ...this.pages.splice(this.draggingRowIndex, 1))
+
+            // change order value of each section
+            this.pages.forEach(function(page, index){
+                page.order = index + 1;
+            });
+
+            // send post request with new order
+            axios.post(this.route('app.sections.pages.order', this.section.id), {
+                pages: this.pages
+            }).then((response) => {
+                this.$buefy.toast.open({
+                    message: 'Order of pages changed successfully',
+                    type: 'is-success',
+                    duration: 3000,
+                })
+
+                this.navigationMutated = response.data.navigation;
+            }).catch((error) => {
+                this.$buefy.toast.open({
+                    message: 'Failed to change order of pages, please try again',
+                    type: 'is-danger',
+                    duration: 3000,
+                })
             });
         }
     }

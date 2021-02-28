@@ -117,8 +117,23 @@ class PageController extends Controller
         return redirect()->route('app.projects.pages.show', ['project' => $project, 'page' => $page]);
     }
 
-    public function destroy(Project $project, Page $page)
+    public function destroy(Project $project, $slug)
     {
-        //
+        $project->pages->firstWhere('slug', $slug)->delete();
+
+        return redirect()->back()->with('success', 'Removed page from project!');
+    }
+
+    public function order(Request $request, Section $section)
+    {
+        $pages = collect($request->pages);
+
+        foreach ($section->pages as $page) {
+            $page->update(['order' => $pages->firstWhere('id', $page->id)['order']]);
+        }
+
+        return response()->json([
+            'navigation' => $section->project->getNavigation()
+        ]);
     }
 }

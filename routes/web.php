@@ -14,7 +14,7 @@ use Inertia\Inertia;
 | GUEST
 |--------------------------------------------------------------------------
 |
-| These routes are public for everyone one the web.
+| These routes are public for everyone on the web.
 |
 */
 
@@ -28,7 +28,7 @@ Route::get('/', function () {
 | USER
 |--------------------------------------------------------------------------
 |
-| These routes are only for normal users
+| These routes are only for logged in users
 |
 */
 
@@ -40,6 +40,7 @@ Route::middleware(['auth'])->prefix('app')->name('app.')->group(function (){
     Route::post('projects/{project}/sections/order', [SectionController::class, 'order'])->name('projects.sections.order');
     Route::resource('projects.sections', SectionController::class)->shallow();
 
+    Route::post('sections/{section}/pages/order', [PageController::class, 'order'])->name('sections.pages.order');
     Route::resource('projects.pages', PageController::class)->except(['index']);
 
     // project media

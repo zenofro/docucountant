@@ -93,7 +93,15 @@ class SectionController extends Controller
                 'title',
                 'slug',
                 'order'
-            ])
+            ]),
+            'pages' => $section->pages()->orderBy('order')->get()->map(function (Page $page) {
+                return $page->only([
+                    'id',
+                    'slug',
+                    'title',
+                    'order'
+                ]);
+            })
         ]);
     }
 
@@ -111,10 +119,11 @@ class SectionController extends Controller
 
         $section->update([
             'title' => $request->title,
-            'slug' =>Str::slug($request->title)
+            'slug' => Str::slug($request->title)
         ]);
 
-        return redirect()->route('app.projects.sections.index', $section->project)->with('success', 'Section was updated successfully');
+        return redirect()->route('app.projects.sections.index', $section->project)->with('success',
+            'Section was updated successfully');
     }
 
     public function destroy(Section $section)
