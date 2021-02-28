@@ -35,28 +35,43 @@
         <!-- Media -->
         <section>
             <b-button
+                expanded
                 label="Media"
                 type="is-info is-light"
-                expanded
-                @click="openMediaModal" />
+                @click="openMediaModal"/>
 
-            <b-modal v-model="isMediaModalActive" class="p-5" :width="1500">
+            <b-modal
+                v-model="isMediaModalActive"
+                :width="1500"
+                class="p-5"
+            >
                 <div class="card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Available media for {{ project.name }}</p>
+                        <button
+                            class="delete"
+                            type="button"
+                            @click="isMediaModalActive = false"/>
+                    </header>
+
                     <div class="card-content">
 
-                        <b-loading :is-full-page="false" v-model="isLoading"></b-loading>
+
+                        <b-loading v-model="isLoading" :is-full-page="false"></b-loading>
 
                         <!-- Available media -->
                         <b-tabs v-model="activeTab">
                             <b-tab-item label="Images">
                                 <div class="columns is-multiline">
-                                    <div class="column is-2 mb-5" v-for="media in mediaImages">
+                                    <div v-for="media in mediaImages" class="column is-2 mb-5">
                                         <div class="notification is-light">
-                                        <button class="delete is-flex is-justify-content-end" @click="deleteMedia(media)"></button>
+                                            <button class="delete is-flex is-justify-content-end"
+                                                    @click="deleteMedia(media)"></button>
 
-                                        <a href="#"  @click="getUrl(media)">
-                                            <img :src="media.url" :alt="media.file_name" style="height: 100px; width: 200px; object-fit: contain" />
-                                        </a>
+                                            <a href="#" @click="getUrl(media)">
+                                                <img :alt="media.file_name" :src="media.url"
+                                                     style="height: 100px; width: 200px; object-fit: contain"/>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -64,18 +79,19 @@
 
                             <b-tab-item label="Videos">
                                 <div class="columns is-multiline">
-                                    <div class="column is-2 mb-5" v-for="media in mediaVideos">
+                                    <div v-for="media in mediaVideos" class="column is-2 mb-5">
                                         <div class="notification is-light">
-                                            <button class="delete is-flex is-justify-content-end" @click="deleteMedia(media)"></button>
+                                            <button class="delete is-flex is-justify-content-end"
+                                                    @click="deleteMedia(media)"></button>
 
-                                            <a href="#"  @click="getUrl(media)">
-                                                <img :src="media.thumbnail" :alt="media.file_name" style="height: 100px; width: 200px; object-fit: contain" />
+                                            <a href="#" @click="getUrl(media)">
+                                                <img :alt="media.file_name" :src="media.thumbnail"
+                                                     style="height: 100px; width: 200px; object-fit: contain"/>
                                             </a>
                                         </div>
                                     </div>
                                 </div>
                             </b-tab-item>
-
                         </b-tabs>
 
 
@@ -83,30 +99,31 @@
                         <form @submit.prevent="uploadMedia">
                             <div class="is-flex">
                                 <b-field
+                                    :class="{'has-name': !!form.media}"
                                     :message="form.errors.media"
                                     :type="form.errors.media ? 'is-danger' : null"
                                     class="file is-primary"
-                                    :class="{'has-name': !!form.media}"
                                 >
                                     <b-upload
                                         v-model="form.media"
+                                        accept="video/*,image/*"
                                         class="file-label"
                                         required
-                                        accept="video/*,image/*"
                                     >
                                         <span class="file-cta">
                                             <b-icon class="file-icon" icon="upload"></b-icon>
                                             <span class="file-label">Click to upload</span>
                                         </span>
 
-                                        <span class="file-name" v-if="form.media">
+                                        <span v-if="form.media" class="file-name">
                                             {{ form.media.name }}
                                         </span>
                                     </b-upload>
                                 </b-field>
 
-                                <div class="ml-3" v-if="form.media">
-                                    <b-button :disabled="form.processing" :loading="form.processing" native-type="submit"
+                                <div v-if="form.media" class="ml-3">
+                                    <b-button :disabled="form.processing" :loading="form.processing"
+                                              native-type="submit"
                                               type="is-success">
                                         Upload
                                     </b-button>
@@ -143,13 +160,13 @@ export default {
     },
 
     methods: {
-        openMediaModal: function (){
+        openMediaModal: function () {
             this.isMediaModalActive = true;
             this.isLoading = true;
             this.refreshMedia();
         },
 
-        refreshMedia: function (){
+        refreshMedia: function () {
             axios.get(this.route('app.projects.media.index', this.project.slug))
                 .then((response) => {
                     this.mediaImages = response.data.media_images;
@@ -161,7 +178,7 @@ export default {
         uploadMedia: function () {
             this.form.post(this.route('app.projects.media.store', this.project.slug), {
                 onSuccess: page => {
-                    if(this.form.wasSuccessful){
+                    if (this.form.wasSuccessful) {
                         this.form.reset();
                         this.refreshMedia();
                     }
@@ -169,7 +186,7 @@ export default {
             })
         },
 
-        getUrl: function (media){
+        getUrl: function (media) {
             this.$copyText(media.url)
                 .then((e) => {
                     this.$buefy.toast.open({
@@ -183,10 +200,10 @@ export default {
                         type: 'is-danger',
                         duration: 1500,
                     })
-            });
+                });
         },
 
-        deleteMedia: function (media){
+        deleteMedia: function (media) {
             axios.delete(this.route('app.projects.media.destroy', this.project.slug), {
                 data: {
                     media_id: media.id
