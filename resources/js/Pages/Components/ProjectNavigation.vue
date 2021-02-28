@@ -63,14 +63,16 @@
                             </b-tab-item>
 
                             <b-tab-item label="Videos">
-                                <div class="columns">
-                                    <a href="#" class="mr-3 has-background-light" v-for="media in mediaVideos" @click="getUrl(media)">
-                                        <div class="column mb-5" style="height: auto" >
-                                            <figure class="image" style="height: 100px; width: 200px">
-                                                <img :src="media.thumbnail" :alt="media.file_name" />
-                                            </figure>
+                                <div class="columns is-multiline">
+                                    <div class="column is-2 mb-5" v-for="media in mediaVideos">
+                                        <div class="notification is-light">
+                                            <button class="delete is-flex is-justify-content-end" @click="deleteMedia(media)"></button>
+
+                                            <a href="#"  @click="getUrl(media)">
+                                                <img :src="media.thumbnail" :alt="media.file_name" style="height: 100px; width: 200px; object-fit: contain" />
+                                            </a>
                                         </div>
-                                    </a>
+                                    </div>
                                 </div>
                             </b-tab-item>
 
