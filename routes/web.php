@@ -5,6 +5,7 @@ use App\Http\Controllers\App\DashboardController;
 use App\Http\Controllers\App\MediaController;
 use App\Http\Controllers\App\PageController;
 use App\Http\Controllers\App\ProjectController;
+use App\Http\Controllers\App\SearchController;
 use App\Http\Controllers\App\SectionController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -34,6 +35,8 @@ Route::get('/', function () {
 
 Route::middleware(['auth'])->prefix('app')->name('app.')->group(function (){
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::post('search', SearchController::class)->name('search');
 
     Route::resource('projects', ProjectController::class);
 

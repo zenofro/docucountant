@@ -8,7 +8,7 @@
             </div>
 
             <!-- Page -->
-            <div class="column">
+            <div class="column is-9">
                 <!-- Breadcrumb -->
                 <nav class="breadcrumb" aria-label="breadcrumbs">
                     <ul>

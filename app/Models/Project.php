@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Spatie\Searchable\Searchable;
+use Spatie\Searchable\SearchResult;
 
-class Project extends Model implements HasMedia
+class Project extends Model implements HasMedia, Searchable
 {
     use InteractsWithMedia;
 
@@ -54,5 +56,16 @@ class Project extends Model implements HasMedia
     public function pages()
     {
         return $this->hasManyThrough(Page::class, Section::class);
+    }
+
+    public function getSearchResult(): SearchResult
+    {
+        $url = route('app.projects.show', $this->slug);
+
+        return new SearchResult(
+            $this,
+            $this->name,
+            $url
+        );
     }
 }

@@ -37,15 +37,38 @@
                     </div>
                 </b-navbar-item>
 
-                <b-navbar-dropdown :label="auth.user.name" v-else>
-                    <inertia-link :href="route('admin.users.index')" as="b-navbar-item" :active="route().current('admin.users.*')">
-                        Users
-                    </inertia-link>
+                <template v-else>
+                    <b-navbar-item tag="div">
+                        <b-field>
+                            <b-autocomplete
+                                rounded
+                                :data="results"
+                                v-model="searchValue"
+                                icon="search"
+                                placeholder="Search for a project.."
+                                @typing="search"
+                                @select="option => navigate(option)"
+                            >
+                                <template #empty>No results found</template>
 
-                    <inertia-link :href="route('logout')" method="post" as="b-navbar-item">
-                        <strong>Logout</strong>
-                    </inertia-link>
-                </b-navbar-dropdown>
+                                <template slot-scope="props">
+                                    {{ props.option.title }}
+                                </template>
+                            </b-autocomplete>
+                        </b-field>
+                    </b-navbar-item>
+
+                    <b-navbar-dropdown :label="auth.user.name" >
+                        <inertia-link :href="route('admin.users.index')" as="b-navbar-item" :active="route().current('admin.users.*')">
+                            Users
+                        </inertia-link>
+
+                        <inertia-link :href="route('logout')" method="post" as="b-navbar-item">
+                            <strong>Logout</strong>
+                        </inertia-link>
+                    </b-navbar-dropdown>
+                </template>
+
             </template>
         </b-navbar>
 
@@ -68,6 +91,10 @@ export default {
                 {route: route('home'), label: 'Home', activeRoute: 'home', visible: 'always'},
                 {route: route('app.projects.index'), label: 'Projects', activeRoute: 'app.projects.*', visible: false},
             ],
+
+            searchValue: null,
+            results: null,
+            selected: null,
         }
     },
 
@@ -100,6 +127,24 @@ export default {
             })
         }
     },
+
+    methods: {
+        search: function () {
+            if (this.searchValue) {
+                axios.post(this.route('app.search'), {
+                    value: this.searchValue
+                }).then((response) => {
+                    this.results = response.data.result;
+                });
+            }
+        },
+
+        navigate: function (option){
+            if (option.url){
+                this.$inertia.get(option.url);
+            }
+        }
+    }
 
 }
 </script>
