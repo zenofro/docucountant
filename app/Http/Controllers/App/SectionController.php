@@ -94,6 +94,12 @@ class SectionController extends Controller
                 'slug',
                 'order'
             ]),
+            'sections' => $section->project->sections()->whereKeyNot($section->id)->get()->map(function (Section $section){
+                return $section->only([
+                    'id',
+                    'title'
+                ]);
+            }),
             'pages' => $section->pages()->orderBy('order')->get()->map(function (Page $page) {
                 return $page->only([
                     'id',

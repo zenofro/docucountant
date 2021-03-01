@@ -136,4 +136,15 @@ class PageController extends Controller
             'navigation' => $section->project->getNavigation()
         ]);
     }
+
+    public function transfer(Request $request)
+    {
+        $page = Page::findOrFail($request->pageId);
+
+        $page->update([
+            'section_id' => $request->targetSectionId
+        ]);
+
+        return redirect()->route('app.sections.edit', $page->section)->with('success', 'Page transfered successfully');
+    }
 }

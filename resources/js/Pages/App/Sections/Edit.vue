@@ -87,6 +87,10 @@
                         </b-table-column>
 
                         <b-table-column v-slot="props" :numeric="true" field="action">
+                            <b-button type="is-text" class="has-text-warning" @click="openTransferModal(props.row.id)">
+                                <i class="fas fa-exchange-alt"></i>
+                            </b-button>
+
                             <b-button type="is-text" class="has-text-danger" @click="deletePage(props.row.slug)">
                                 <i class="fas fa-trash-alt"></i>
                             </b-button>
@@ -95,6 +99,57 @@
                 </div>
             </div>
         </div>
+
+        <!-- Transfer modal -->
+        <section>
+            <b-modal
+                v-model="isTransferModalActive"
+                class="p-5"
+            >
+                <div class="card">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Transfer page to other section</p>
+                        <button
+                            class="delete"
+                            type="button"
+                            @click="isTransferModalActive = false"/>
+                    </header>
+
+                    <div class="card-content">
+                        <form @submit.prevent="transferPage">
+                            <b-input v-model="transferForm.pageId" type="hidden"></b-input>
+
+                            <div class="columns is-centered">
+                                <div class="column">
+                                    <b-field :message="transferForm.errors.targetSectionId"
+                                             :type="transferForm.errors.targetSectionId ? 'is-danger' : null"
+                                    >
+                                        <b-select placeholder="Select a section to transfer to"
+                                                  v-model="transferForm.targetSectionId"
+                                                  expanded
+                                                  required>
+                                            <option
+                                                v-for="section in sections"
+                                                :value="section.id"
+                                                :key="section.id">
+                                                {{ section.title }}
+                                            </option>
+                                        </b-select>
+                                    </b-field>
+                                </div>
+
+                                <div class="column is-one-third is-flex is-justify-content-center">
+                                    <b-button :disabled="transferForm.processing" :loading="transferForm.processing" native-type="submit"
+                                              type="is-success">
+                                        Transfer
+                                    </b-button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </b-modal>
+        </section>
     </div>
 </template>
 
@@ -109,6 +164,7 @@ export default {
         navigation: Array,
         project: Object,
         section: Object,
+        sections: Array,
         pages: Array
     },
 
@@ -118,9 +174,14 @@ export default {
                 title: this.section.title,
                 slug: this.section.slug,
             }),
+            transferForm: this.$inertia.form({
+                pageId: null,
+                targetSectionId: null,
+            }),
             navigationMutated: this.navigation,
             draggingRow: null,
-            draggingRowIndex: null
+            draggingRowIndex: null,
+            isTransferModalActive: false,
         }
     },
 
@@ -148,6 +209,20 @@ export default {
                     this.$inertia.delete(this.route('app.projects.pages.destroy', {project: this.project.slug, page: slug}));
                 }
             });
+        },
+
+        openTransferModal: function (id){
+            this.isTransferModalActive = true;
+            this.transferForm.pageId = id;
+        },
+
+        transferPage: function (id){
+            this.transferForm.post(this.route('app.pages.transfer'), {
+                onSuccess: (response) => {
+                    this.isTransferModalActive = false;
+                    this.navigationMutated = response.props.navigation;
+                }
+            })
         },
 
         // start dragging
