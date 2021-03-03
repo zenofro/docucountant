@@ -34,6 +34,13 @@ class Project extends Model implements HasMedia, Searchable
         });
     }
 
+    public function getUsersWithPermission()
+    {
+        return User::whereHas('permissions', function ($q){
+            return $q->whereIn('name', ['projects.create,update,view.' . $this->id]);
+        })->get();
+    }
+
     public function registerMediaConversions(Media $media = null): void
     {
         $this->addMediaConversion('thumb')

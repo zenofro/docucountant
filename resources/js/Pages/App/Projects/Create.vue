@@ -10,7 +10,7 @@
 
         <!-- Form -->
         <div class="box">
-            <form @submit.prevent="form.post(route('app.projects.store'))">
+            <form @submit.prevent="submit">
                 <!-- name -->
                 <b-field :message="form.errors.name"
                          :type="form.errors.name ? 'is-danger' : null"
@@ -39,6 +39,46 @@
                     <b-input v-model="form.description" type="textarea"></b-input>
                 </b-field>
 
+                <!-- User permissions -->
+                <div class="columns mt-6">
+                    <div class="column">
+                        <b-menu>
+                            <b-menu-list label="Users">
+                                <b-menu-item v-for="user in users" :key="user.id"
+                                             :label="user.name"
+                                             :icon="checkActivePermission(user.permissions)"
+                                             @click="setActiveUser(user)">
+                                </b-menu-item>
+                            </b-menu-list>
+                        </b-menu>
+                    </div>
+
+                    <div class="column">
+                        <div v-if="activeUser">
+                            <b-field>
+                                <b-checkbox v-model="activeUserPermissions"
+                                            native-value="create">
+                                    Create pages/sections
+                                </b-checkbox>
+                            </b-field>
+
+                            <b-field>
+                                <b-checkbox v-model="activeUserPermissions"
+                                            native-value="view">
+                                    view project
+                                </b-checkbox>
+                            </b-field>
+
+                            <b-field>
+                                <b-checkbox v-model="activeUserPermissions"
+                                            native-value="update">
+                                    edit pages/sections
+                                </b-checkbox>
+                            </b-field>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- submit -->
                 <div class="is-flex is-justify-content-flex-end pt-3">
                     <b-button :disabled="form.processing" :loading="form.processing" native-type="submit" type="is-success">
@@ -53,6 +93,10 @@
 <script>
 
 export default {
+    props: {
+        users: Array,
+    },
+
     data() {
         return {
             form: this.$inertia.form({
@@ -60,7 +104,27 @@ export default {
                 slug: null,
                 short_description: null,
                 description: null,
+                users: this.users
             }),
+
+            activeUser: null,
+            activeUserPermissions: []
+        }
+    },
+
+    watch: {
+        // whenever question changes, this function will run
+        activeUserPermissions: function (newValue, oldValue) {
+            let user = this.users.find(x => x.id === this.activeUser);
+
+            for (const [key, value] of Object.entries(user.permissions)) {
+                if (newValue.includes(key)){
+                    user.permissions[key] = true;
+                }
+                else{
+                    user.permissions[key] = false;
+                }
+            }
         }
     },
 
@@ -69,6 +133,28 @@ export default {
             this.form.slug = slugify(this.form.name, {
                 lower: true
             });
+        },
+
+        checkActivePermission: function (permissions){
+            for (const [key, value] of Object.entries(permissions)) {
+                if (value === true){
+                    return 'star';
+                }
+            }
+        },
+
+        setActiveUser: function (user){
+            this.activeUser = user.id;
+
+            this.activeUserPermissions = [];
+            if(user.permissions.create) this.activeUserPermissions.push('create');
+            if(user.permissions.update) this.activeUserPermissions.push('update');
+            if(user.permissions.view) this.activeUserPermissions.push('view');
+        },
+
+        submit: function () {
+            this.form.users = this.users;
+            this.form.post(this.route('app.projects.store'))
         }
     }
 }
