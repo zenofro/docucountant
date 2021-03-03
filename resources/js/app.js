@@ -7,6 +7,7 @@ require('./bootstrap');
 */
 
 import { App, plugin } from '@inertiajs/inertia-vue'
+import Permissions from './mixins/Permissions';
 import Vue from 'vue'
 
 Vue.use(plugin)
@@ -35,6 +36,8 @@ new Vue({
         },
     }),
 }).$mount(el)
+
+Vue.mixin(Permissions);
 
 // progressbar
 import { InertiaProgress } from '@inertiajs/progress'
