@@ -13,11 +13,19 @@ use Inertia\Inertia;
 
 class PageController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function create(Project $project)
     {
+        $this->authorize('create', $project);
+
         return Inertia::render('App/Pages/Create', [
             'navigation' => $project->getNavigation(),
             'project' => $project->only([
+                'id',
                 'name',
                 'slug'
             ]),
@@ -33,6 +41,8 @@ class PageController extends Controller
 
     public function store(Request $request, Project $project)
     {
+        $this->authorize('create', $project);
+
         $section = $project->sections()->findOrFail($request->section_id);
 
         $this->validate($request, [
@@ -58,6 +68,8 @@ class PageController extends Controller
 
     public function show(Project $project, $slug)
     {
+        $this->authorize('view', $project);
+
         $page = $project->pages->firstWhere('slug', $slug);
 
         if (!$page) abort(404);
@@ -65,6 +77,7 @@ class PageController extends Controller
         return Inertia::render('App/Pages/Show', [
             'navigation' => $page->section->project->getNavigation(),
             'project' => $page->section->project->only([
+                'id',
                 'slug',
                 'name'
             ]),
@@ -83,6 +96,8 @@ class PageController extends Controller
 
     public function edit(Project $project, $slug)
     {
+        $this->authorize('update', $project);
+
         $page = $project->pages->firstWhere('slug', $slug);
 
         if (!$page) abort(404);
@@ -90,6 +105,7 @@ class PageController extends Controller
         return Inertia::render('App/Pages/Edit', [
             'navigation' => $page->section->project->getNavigation(),
             'project' => $page->section->project->only([
+                'id',
                 'slug',
                 'name'
             ]),
@@ -108,6 +124,8 @@ class PageController extends Controller
 
     public function update(Request $request, Project $project, $slug)
     {
+        $this->authorize('update', $project);
+
         $page = $project->pages->firstWhere('slug', $slug);
 
         if (!$page) abort(404);
@@ -119,6 +137,8 @@ class PageController extends Controller
 
     public function destroy(Project $project, $slug)
     {
+        $this->authorize('update', $project);
+
         $project->pages->firstWhere('slug', $slug)->delete();
 
         return redirect()->back()->with('success', 'Removed page from project!');
@@ -126,6 +146,8 @@ class PageController extends Controller
 
     public function order(Request $request, Section $section)
     {
+        $this->authorize('update', $section->project);
+
         $pages = collect($request->pages);
 
         foreach ($section->pages as $page) {
@@ -140,6 +162,8 @@ class PageController extends Controller
     public function transfer(Request $request)
     {
         $page = Page::findOrFail($request->pageId);
+
+        $this->authorize('update', $page->section->project);
 
         $page->update([
             'section_id' => $request->targetSectionId

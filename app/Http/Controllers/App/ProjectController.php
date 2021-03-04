@@ -16,19 +16,27 @@ class ProjectController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('auth');
+        $this->middleware(['permission:projects.create'])->only(['create', 'store']);
+        $this->middleware(['permission:projects.update'])->only(['edit', 'update']);
+        $this->middleware(['permission:projects.delete'])->only(['destroy']);
     }
 
     public function index()
     {
-        return Inertia::render('App/Projects/Index', [
-            'projects' => Project::all()->map(function (Project $project) {
+        $projects = Project::all()->map(function (Project $project) {
+            if (Auth::user()->can('projects.view.' . $project->id)){
                 return [
                     'slug' => $project->slug,
                     'name' => $project->name,
                     'short_description' => $project->short_description,
                     'user' => $project->user->only('name')
                 ];
-            })
+            }
+        });
+
+        return Inertia::render('App/Projects/Index', [
+            'projects' => $projects
         ]);
     }
 
@@ -98,9 +106,12 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
+        $this->authorize('view', $project);
+
         return Inertia::render('App/Projects/Show', [
             'navigation' => $project->getNavigation(),
             'project' => $project->only([
+                'id',
                 'name',
                 'slug',
                 'short_description',

@@ -7,6 +7,7 @@ use App\Models\Page;
 use App\Models\Project;
 use App\Models\Section;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
@@ -15,11 +16,21 @@ use function PHPUnit\Framework\once;
 
 class SectionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index(Project $project)
     {
+        if (!Auth::user()->canAny(['projects.create.' . $project->id, 'projects.update.' . $project->id])){
+            abort(403);
+        }
+
         return Inertia::render('App/Sections/Index', [
             'navigation' => $project->getNavigation(),
             'project' => $project->only([
+                'id',
                 'slug',
                 'name',
                 'short_description'
@@ -36,9 +47,12 @@ class SectionController extends Controller
 
     public function create(Project $project)
     {
+        $this->authorize('create', $project);
+
         return Inertia::render('App/Sections/Create', [
             'navigation' => $project->getNavigation(),
             'project' => $project->only([
+                'id',
                 'name',
                 'slug'
             ]),
@@ -48,6 +62,8 @@ class SectionController extends Controller
 
     public function store(Request $request, Project $project)
     {
+        $this->authorize('create', $project);
+
         $this->validate($request, [
             'title' => ['required', 'string', 'max:255'],
             'slug' => [
@@ -82,9 +98,12 @@ class SectionController extends Controller
 
     public function edit(Section $section)
     {
+        $this->authorize('update', $section->project);
+
         return Inertia::render('App/Sections/Edit', [
             'navigation' => $section->project->getNavigation(),
             'project' => $section->project->only([
+                'id',
                 'name',
                 'slug'
             ]),
@@ -113,6 +132,8 @@ class SectionController extends Controller
 
     public function update(Request $request, Section $section)
     {
+        $this->authorize('update', $section->project);
+
         $this->validate($request, [
             'title' => ['required', 'string', 'max:255'],
             'slug' => [
@@ -139,6 +160,8 @@ class SectionController extends Controller
 
     public function order(Request $request, Project $project)
     {
+        $this->authorize('update', $project);
+
         $sections = collect($request->sections);
 
         foreach ($project->sections as $section) {
