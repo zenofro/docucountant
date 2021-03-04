@@ -155,7 +155,15 @@ class SectionController extends Controller
 
     public function destroy(Section $section)
     {
-        //
+        $this->authorize('update', $section->project);
+
+        if ($section->pages()->count() > 0){
+            return redirect()->back()->with('error', 'You can\'t delete this section, there are still pages inside!');
+        }
+
+        $section->delete();
+
+        return redirect()->route('app.projects.sections.index', $section->project)->with('success', 'Section removed successfully');
     }
 
     public function order(Request $request, Project $project)

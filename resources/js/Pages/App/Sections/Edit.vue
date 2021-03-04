@@ -56,7 +56,9 @@
                         </b-field>
 
                         <!-- submit -->
-                        <div class="is-flex is-justify-content-flex-end pt-3">
+                        <div class="is-flex is-justify-content-space-between pt-3">
+                            <b-button type="is-danger" @click="destroy()">Delete</b-button>
+
                             <b-button :disabled="form.processing" :loading="form.processing" native-type="submit"
                                       type="is-success">
                                 Edit
@@ -189,6 +191,24 @@ export default {
         slugify: function(){
             this.form.slug = slugify(this.form.title, {
                 lower: true
+            });
+        },
+
+        destroy: function() {
+            this.$swal({
+                icon: 'warning',
+                iconColor: 'red',
+                title: 'Are you sure?',
+                html: '<small>Deleting this section can not bring it back!</small>',
+
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                confirmButtonColor: 'red',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.$swal.showLoading();
+                    Inertia.delete(this.route('app.sections.destroy', this.section.id));
+                }
             });
         },
 
