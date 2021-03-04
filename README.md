@@ -16,6 +16,8 @@ Made with Laravel + Inertia + Vue.
 - `php artisan key:generate`
 - `php artisan migrate --seed`
 - `npm install && npm run prod` 
-- Set up an artisan worker  
+- Set up an artisan worker OR set up laravel scheduler when using a web hosting with restricted access.  
+  This will create a worker every minute with a maximum time alive of 50s to ensure there won't be  
+  an entire army of workers at the end of the day.
 - Login with user 'admin@docucountant.com' and password 'password'
 - Enjoy!
