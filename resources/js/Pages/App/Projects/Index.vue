@@ -8,7 +8,7 @@
         </nav>
 
         <div class="box">
-            <inertia-link :href="route('app.projects.create')" as="b-button" class="mb-4" type="is-success is-light">
+            <inertia-link :href="route('app.projects.create')" as="b-button" class="mb-4" type="is-success is-light" v-if="$can('projects.create')">
                 Create new project
             </inertia-link>
 
@@ -35,7 +35,8 @@
                 <b-table-column v-slot="props" width="60">
                     <div class="is-flex is-justify-content-center">
                         <inertia-link :href="route('app.projects.edit', props.row.slug)" as="b-button"
-                                      class="has-text-warning " type="is-text">
+                                      class="has-text-warning " type="is-text"
+                                      v-if="$can('projects.edit')">
                             <i class="fas fa-edit"></i>
                         </inertia-link>
 

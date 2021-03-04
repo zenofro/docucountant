@@ -22,7 +22,7 @@
                 <!-- Contents -->
                 <div class="box">
                     <div class="has-text-right">
-                        <inertia-link :href="route('app.projects.pages.edit', {project: project.slug, page: page.slug})" class="has-text-warning">
+                        <inertia-link :href="route('app.projects.pages.edit', {project: project.slug, page: page.slug})" class="has-text-warning" v-if="$can(`projects.update.${project.id}`)">
                             <i class="fas fa-edit"></i>
                         </inertia-link>
                     </div>

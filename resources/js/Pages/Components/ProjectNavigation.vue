@@ -16,7 +16,7 @@
             </b-menu-list>
         </b-menu>
 
-        <div class="columns mt-5">
+        <div class="columns mt-5" v-if="$can(`projects.create.${project.id}`)">
             <div class="column">
                 <inertia-link :href="route('app.projects.sections.index', project.slug)" as="b-button" class=""
                               expanded type="is-primary">
@@ -33,7 +33,7 @@
         </div>
 
         <!-- Media -->
-        <section>
+        <section v-if="$can(`projects.create.${project.id}`) || $can(`projects.update.${project.id}`)">
             <b-button
                 expanded
                 label="Media"

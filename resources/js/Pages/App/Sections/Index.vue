@@ -30,7 +30,7 @@
 
                 <!-- Sections -->
                 <inertia-link :href="route('app.projects.sections.create', project.slug)" as="b-button" class="mb-4"
-                              type="is-success is-light">
+                              type="is-success is-light" v-if="$can(`projects.create.${project.id}`)">
                     Create new section
                 </inertia-link>
 
@@ -54,7 +54,7 @@
                     <b-table-column v-slot="props" :numeric="true" field="action">
                         <inertia-link
                             :href="route('app.sections.edit',  props.row.id)"
-                            as="b-button" class="has-text-warning" type="is-text">
+                            as="b-button" class="has-text-warning" type="is-text" v-if="$can(`projects.update.${project.id}`)">
                             <i class="fas fa-edit"></i>
                         </inertia-link>
                     </b-table-column>
